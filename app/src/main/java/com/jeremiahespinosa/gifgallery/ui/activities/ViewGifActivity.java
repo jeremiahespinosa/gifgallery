@@ -3,10 +3,12 @@ package com.jeremiahespinosa.gifgallery.ui.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import com.jeremiahespinosa.gifgallery.R;
+import com.jeremiahespinosa.gifgallery.models.Gifs;
 import com.jeremiahespinosa.gifgallery.presenter.ViewGifPresenter;
 import com.jeremiahespinosa.gifgallery.utility.App;
 
@@ -20,6 +22,7 @@ public class ViewGifActivity extends Activity {
     public static String GIF_TITLE_KEY = "gif_title_key";
     public static String GIF_BASE_PATH = "gif_base_path";
     public static String GIF_SOURCE = "gif_source";
+    public static String GIF_PARCEL_OBJECT = "gif_parcel_object";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,29 +37,23 @@ public class ViewGifActivity extends Activity {
     }
 
     private void getExtras(final ImageView gifImageView, Context context){
-        //could simplify by converting Gifs into parcelable
-        String gifUrl = "";
-        String gifTitle = "";
-        String basePath = "";
-        String gifSource = "";
+
+        Gifs selectedGif = null;
 
         Bundle extrasFromIntent = getIntent().getExtras();
         if(extrasFromIntent != null){
-            basePath = extrasFromIntent.getString(GIF_BASE_PATH);
-            gifUrl = extrasFromIntent.getString(GIF_URL_KEY);
-            gifTitle = extrasFromIntent.getString(GIF_TITLE_KEY);
-            gifSource = extrasFromIntent.getString(GIF_SOURCE);
+            selectedGif = (Gifs) extrasFromIntent.getParcelable(GIF_PARCEL_OBJECT);
         }
 
 
-        //start up the presenter. set it to load the image based on service
+        //start up the presenter. set it to load the gif based on service
         ViewGifPresenter viewGifPresenter = new ViewGifPresenter(context);
-        viewGifPresenter.loadGifIntoImageView(gifSource, gifUrl, basePath, gifImageView);
+        viewGifPresenter.loadGifIntoImageView(selectedGif, gifImageView);
 
-        setupToolbar(gifTitle);
+        setupToolbar(selectedGif.getImageName());
     }
 
-    private void setupToolbar(String title){
+    private void setupToolbar(@Nullable String title){
         Toolbar toolbar = (Toolbar) findViewById(R.id.viewGifToolbar);
 
         if(title != null && !title.isEmpty())

@@ -77,9 +77,9 @@ public class ImagesFragmentPresenter {
 
                 File gifFile = new File(filePath);
                 if(gifFile.exists()){
-                    Gifs gif = new Gifs();
-                    gif.setUrlToLoad(filePath);
-                    gif.setGifSource(App.getStringById(R.string.title_local));
+
+                    Gifs gif = new Gifs(filePath, filePath, null, App.getStringById(R.string.title_local));
+
                     imagePreviewAdapter.addAnotherItem(gif);
                 }
             }
@@ -146,19 +146,16 @@ public class ImagesFragmentPresenter {
                         if(((DropboxAPI.Entry)existingEntry.metadata).mimeType != null &&
                                 ((DropboxAPI.Entry)existingEntry.metadata).mimeType.contains("image/gif")){
 
-                            Gifs gif = new Gifs();
-                            gif.setBasePath(((DropboxAPI.Entry)existingEntry.metadata).path);
+                            String thumbnailUrl = "https://api-content.dropbox.com/1/thumbnails/auto"
+                                    +((DropboxAPI.Entry)existingEntry.metadata).path
+                                    +"?"
+                                    +"format=jpeg&"+"size=m&"+"access_token="+PrefUtils.getPrefDropboxAccessToken();
 
-                            //building url so that the adapter will be able to just load the thumbnail
-                            gif.setUrlToLoad(
-                                    "https://api-content.dropbox.com/1/thumbnails/auto"
-                                            +((DropboxAPI.Entry)existingEntry.metadata).path
-                                            +"?"
-                                            +"format=jpeg&"+"size=m&"+"access_token="+PrefUtils.getPrefDropboxAccessToken());
-
-                                    gif.setImageName(((DropboxAPI.Entry) existingEntry.metadata).fileName());
-
-                            gif.setGifSource(App.getStringById(R.string.title_dropbox));
+                            Gifs gif = new Gifs(
+                                        ((DropboxAPI.Entry)existingEntry.metadata).path,
+                                        thumbnailUrl,
+                                        ((DropboxAPI.Entry) existingEntry.metadata).fileName(),
+                                        App.getStringById(R.string.title_dropbox));
 
                             listOfGifsAvailable.add(gif);
                         }
@@ -250,11 +247,13 @@ public class ImagesFragmentPresenter {
                     if( (files.getItems().get(i).getMimeType() != null) && files.getItems().get(i).getMimeType().contains("gif") ){
                         if(files.getItems().get(i).getThumbnailLink() != null && !files.getItems().get(i).getThumbnailLink().isEmpty()){
 
-                            Gifs gif = new Gifs();
-                            gif.setBasePath(files.getItems().get(i).getDownloadUrl());
-                            gif.setImageName(files.getItems().get(i).getOriginalFilename());
-                            gif.setUrlToLoad(files.getItems().get(i).getThumbnailLink());
-                            gif.setGifSource(App.getStringById(R.string.title_drive));
+                            Gifs gif = new Gifs(
+                                    files.getItems().get(i).getDownloadUrl(),
+                                    files.getItems().get(i).getThumbnailLink(),
+                                    files.getItems().get(i).getOriginalFilename(),
+                                    App.getStringById(R.string.title_drive)
+                            );
+
                             result.add(gif);
                         }
                     }

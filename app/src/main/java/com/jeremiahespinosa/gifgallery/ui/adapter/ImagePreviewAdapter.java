@@ -36,7 +36,7 @@ public class ImagePreviewAdapter extends RecyclerView.Adapter<ImagePreviewAdapte
         Gifs gif = mListOfGifs.get(position);
 
         Glide.with(viewHolder.mImageView.getContext())
-                .load(gif.getUrlToLoad())
+                .load(gif.getThumbnailUrlToLoad())
                 .asBitmap()
                 .centerCrop()
                 .into(viewHolder.mImageView);
@@ -135,12 +135,9 @@ public class ImagePreviewAdapter extends RecyclerView.Adapter<ImagePreviewAdapte
 
         @Override
         public void onClick(View v) {
-            //convert Gifs into parcelable
             Intent intent = new Intent(mImageView.getContext(), ViewGifActivity.class);
-            intent.putExtra(ViewGifActivity.GIF_URL_KEY, selectedGif.getUrlToLoad());
-            intent.putExtra(ViewGifActivity.GIF_TITLE_KEY, selectedGif.getImageName());
-            intent.putExtra(ViewGifActivity.GIF_BASE_PATH, selectedGif.getBasePath());
-            intent.putExtra(ViewGifActivity.GIF_SOURCE, selectedGif.getGifSource());
+            intent.putExtra(ViewGifActivity.GIF_PARCEL_OBJECT, selectedGif);
+
             mImageView.getContext().startActivity(intent);
         }
     }

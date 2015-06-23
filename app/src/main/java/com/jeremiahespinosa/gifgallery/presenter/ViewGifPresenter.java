@@ -18,6 +18,7 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.jeremiahespinosa.gifgallery.R;
+import com.jeremiahespinosa.gifgallery.models.Gifs;
 import com.jeremiahespinosa.gifgallery.utility.App;
 import com.jeremiahespinosa.gifgallery.utility.PrefUtils;
 
@@ -53,23 +54,20 @@ public class ViewGifPresenter {
         mContext = context;
     }
 
-    public void loadGifIntoImageView(String gifSource, String gifUrl, String basePath, ImageView gifImageView){
-        if(gifUrl != null && !gifUrl.isEmpty()){
+    public void loadGifIntoImageView(Gifs selectedGif, ImageView gifImageView){
 
-            if(basePath != null && !basePath.isEmpty()){
-                //download the image first before loading
+        if(selectedGif != null){
 
-                if(gifSource.equals(App.getStringById(R.string.title_dropbox))){
-                    getImageFromDropbox(basePath, gifImageView);
-                }
-                else{
-                    getImageFromGoogleDrive(basePath, gifImageView);
-                }
+            if(selectedGif.getGifSource().equals(App.getStringById(R.string.title_dropbox))){
+                getImageFromDropbox(selectedGif.getFullImageToLoadPath(), gifImageView);
+            }
+            else if(selectedGif.getGifSource().equals(App.getStringById(R.string.title_drive))){
+                getImageFromGoogleDrive(selectedGif.getFullImageToLoadPath(), gifImageView);
             }
             else{
                 //local file so just load the image
                 Glide.with(mContext)
-                        .load(gifUrl)
+                        .load(selectedGif.getFullImageToLoadPath())
                         .asGif()
                         .crossFade()
                         .placeholder(R.mipmap.ic_launcher)
