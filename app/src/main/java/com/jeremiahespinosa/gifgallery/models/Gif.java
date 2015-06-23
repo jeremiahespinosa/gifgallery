@@ -8,10 +8,11 @@ import android.os.Parcelable;
  */
 public class Gif implements Parcelable{
 
-    //fullImageToLoadPath (dropbox): used for dropbox path, since the url must be constructed for each call
-    //we will save the path to the image
-
-    //fullImageToLoadPath (gDrive): used as the link that will be called to download the selected image
+    /**
+     * fullImageToLoadPath (dropbox): used for dropbox path, since the url must be constructed for each call
+     * we will save the path to the image.
+     * fullImageToLoadPath (gDrive): used as the link that will be called to download the selected image
+     */
     private String fullImageToLoadPath;
 
     //thumbnail path or url
@@ -42,6 +43,7 @@ public class Gif implements Parcelable{
         thumbnailUrlToLoad = in.readString();
         imageName = in.readString();
         gifSource = in.readString();
+
     }
 
     public String getFullImageToLoadPath() {

@@ -21,6 +21,7 @@ import com.jeremiahespinosa.gifgallery.R;
 import com.jeremiahespinosa.gifgallery.models.Gif;
 import com.jeremiahespinosa.gifgallery.utility.App;
 import com.jeremiahespinosa.gifgallery.utility.PrefUtils;
+import com.jeremiahespinosa.gifgallery.utility.StorageUtils;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -113,7 +114,7 @@ public class ViewGifPresenter {
         protected String doInBackground(Void... params) {
             InputStream dropboxFileContents = null;
             try{
-                dropboxFileContents = downloadFile();
+                dropboxFileContents = StorageUtils.downloadFile(dropboxGifPath);
             }
             catch (DropboxException e){
                 e.printStackTrace();
@@ -125,32 +126,17 @@ public class ViewGifPresenter {
             String dateBasedFileName_timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.US).format(new Date());
 
             String destinationFilename =
-                    getStorageDirectory(App.getStringById(R.string.app_name)).getPath()
+                    StorageUtils.getStorageDirectory(App.getStringById(R.string.app_name)).getPath()
                     + java.io.File.separator
                     + "GIF_"+dateBasedFileName_timeStamp + ".gif";
 
             java.io.File fileOnDisk = new java.io.File(destinationFilename);
 
             if(dropboxFileContents != null){
-                copyInputStreamToFile(dropboxFileContents, fileOnDisk);
+                StorageUtils.copyInputStreamToFile(dropboxFileContents, fileOnDisk);
             }
 
             return fileOnDisk.getPath();
-        }
-
-        private InputStream downloadFile() throws DropboxException, IOException {
-
-            String dropboxUrl = "https://api-content.dropbox.com/1/files/auto/";
-
-            String slashlessString = dropboxGifPath;
-            slashlessString = slashlessString.substring(1);
-
-            String urlToDownload = dropboxUrl +slashlessString+"?"+"access_token="+ PrefUtils.getPrefDropboxAccessToken();
-
-            URL url = new URL(urlToDownload);
-            URLConnection urlConnection = url.openConnection();
-
-            return new BufferedInputStream(urlConnection.getInputStream());
         }
 
         @Override
@@ -170,32 +156,6 @@ public class ViewGifPresenter {
         }
 
     }
-
-    private static void copyInputStreamToFile( InputStream in, java.io.File file ) {
-        try {
-            OutputStream out = new FileOutputStream(file);
-            byte[] buf = new byte[1024];
-            int len;
-            while((len=in.read(buf))>0){
-                out.write(buf,0,len);
-            }
-            out.close();
-            in.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static File getStorageDirectory(String folderName) {
-        // Get the directory for the user's public pictures directory.
-        File file = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), folderName);
-        if (!file.mkdirs()) {
-            Log.e(TAG, "Directory not created");
-        }
-        return file;
-    }
-
 
     private class DownloadFileFromGoogleDrive extends AsyncTask <Void, Void, String>{
         ProgressDialog progressDialog;
@@ -218,12 +178,12 @@ public class ViewGifPresenter {
         @Override
         protected String doInBackground(Void... params) {
 
-            InputStream driveFileContents = downloadFile(driveService, pathToDownload);
+            InputStream driveFileContents = StorageUtils.downloadFile(driveService, pathToDownload);
 
             String dateBasedFileName_timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.US).format(new Date());
 
             String destinationFilename =
-                    getStorageDirectory(App.getStringById(R.string.app_name)).getPath()
+                    StorageUtils.getStorageDirectory(App.getStringById(R.string.app_name)).getPath()
                             + java.io.File.separator
                             + "GIF_"+dateBasedFileName_timeStamp + ".gif";
 
@@ -232,37 +192,10 @@ public class ViewGifPresenter {
 
             //trying to write stream to the created file
             if(driveFileContents != null){
-                copyInputStreamToFile(driveFileContents, fileOnDisk);
+                StorageUtils.copyInputStreamToFile(driveFileContents, fileOnDisk);
             }
 
             return fileOnDisk.getPath();
-        }
-
-        /**
-         * Download a file's content.
-         *
-         * @param service Drive API service instance.
-         * @param basePath the url to download
-         * @return InputStream containing the file's content if successful,
-         *         {@code null} otherwise.
-         */
-        private InputStream downloadFile(Drive service, String basePath) {
-
-            if (basePath != null && !basePath.isEmpty()) {
-                try {
-                    HttpResponse resp =
-                            service.getRequestFactory().buildGetRequest(new GenericUrl(basePath ))
-                                    .execute();
-                    return resp.getContent();
-                } catch (IOException e) {
-                    // An error occurred.
-                    e.printStackTrace();
-                    return null;
-                }
-            } else {
-                // The file doesn't have any content stored on Drive.
-                return null;
-            }
         }
 
         @Override
