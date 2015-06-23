@@ -4,22 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.json.gson.GsonFactory;
-import com.google.api.services.drive.Drive;
-import com.google.api.services.drive.DriveScopes;
 import com.jeremiahespinosa.gifgallery.R;
 import com.jeremiahespinosa.gifgallery.presenter.ViewGifPresenter;
 import com.jeremiahespinosa.gifgallery.utility.App;
-import com.jeremiahespinosa.gifgallery.utility.PrefUtils;
-
-import java.util.Collections;
 
 /**
  * Created by jespinosa on 6/22/15.
@@ -27,43 +16,42 @@ import java.util.Collections;
 public class ViewGifActivity extends Activity {
 
     private static String TAG = "ViewGifActivity";
-    private Context mContext;
     public static String GIF_URL_KEY = "gif_url_key";
     public static String GIF_TITLE_KEY = "gif_title_key";
     public static String GIF_BASE_PATH = "gif_base_path";
-    private ViewGifPresenter viewGifPresenter;
+    public static String GIF_SOURCE = "gif_source";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_view_gif);
-        mContext = ViewGifActivity.this;
+        Context mContext = ViewGifActivity.this;
 
         final ImageView gifImageView = (ImageView) findViewById(R.id.gifImageView);
-        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.gifProgressBar);
 
-        viewGifPresenter = new ViewGifPresenter(mContext);
-
-        getExtras(gifImageView);
+        getExtras(gifImageView, mContext);
     }
 
-    private void getExtras(final ImageView gifImageView){
+    private void getExtras(final ImageView gifImageView, Context context){
+        //could simplify by converting Gifs into parcelable
         String gifUrl = "";
         String gifTitle = "";
         String basePath = "";
+        String gifSource = "";
 
         Bundle extrasFromIntent = getIntent().getExtras();
         if(extrasFromIntent != null){
             basePath = extrasFromIntent.getString(GIF_BASE_PATH);
             gifUrl = extrasFromIntent.getString(GIF_URL_KEY);
             gifTitle = extrasFromIntent.getString(GIF_TITLE_KEY);
+            gifSource = extrasFromIntent.getString(GIF_SOURCE);
         }
 
-        Log.v(TAG, "loading url-->"+gifUrl);
-        Log.v(TAG, "loading gifTitle-->"+gifTitle);
 
-        viewGifPresenter.loadGifIntoImageView(gifUrl, basePath, gifImageView);
+        //start up the presenter. set it to load the image based on service
+        ViewGifPresenter viewGifPresenter = new ViewGifPresenter(context);
+        viewGifPresenter.loadGifIntoImageView(gifSource, gifUrl, basePath, gifImageView);
 
         setupToolbar(gifTitle);
     }

@@ -1,4 +1,4 @@
-package com.jeremiahespinosa.gifgallery.utility.widgets;
+package com.jeremiahespinosa.gifgallery.ui.widgets;
 
 import android.graphics.Rect;
 import android.support.v7.widget.GridLayoutManager;
@@ -8,6 +8,8 @@ import android.util.TypedValue;
 import android.view.View;
 
 /**
+ * found at http://stackoverflow.com/questions/28531996/android-recyclerview-gridlayoutmanager-column-spacing/29905000#29905000
+ *
  * Created by jespinosa on 6/22/15.
  */
 public class GridSpacingDecoration extends RecyclerView.ItemDecoration {

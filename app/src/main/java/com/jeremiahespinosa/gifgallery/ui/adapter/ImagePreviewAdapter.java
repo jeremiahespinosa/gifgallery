@@ -1,10 +1,7 @@
 package com.jeremiahespinosa.gifgallery.ui.adapter;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.jeremiahespinosa.gifgallery.R;
 import com.jeremiahespinosa.gifgallery.ui.activities.ViewGifActivity;
-import com.jeremiahespinosa.gifgallery.utility.models.Gifs;
+import com.jeremiahespinosa.gifgallery.models.Gifs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +54,12 @@ public class ImagePreviewAdapter extends RecyclerView.Adapter<ImagePreviewAdapte
         return mListOfGifs.size();
     }
 
+    /**
+     * Used to help show when items in the list
+     * are changed either by adding or deleting
+     *
+     * @param models
+     */
     public void animateTo(List<Gifs> models) {
         applyAndAnimateRemovals(models);
         applyAndAnimateAdditions(models);
@@ -76,7 +79,7 @@ public class ImagePreviewAdapter extends RecyclerView.Adapter<ImagePreviewAdapte
         for (int i = 0, count = newModels.size(); i < count; i++) {
             final Gifs model = newModels.get(i);
             if (!mListOfGifs.contains(model)) {
-                addItem(i, model);
+                addItemAtPosition(i, model);
             }
         }
     }
@@ -102,7 +105,7 @@ public class ImagePreviewAdapter extends RecyclerView.Adapter<ImagePreviewAdapte
         return model;
     }
 
-    public void addItem(int position, Gifs model) {
+    public void addItemAtPosition(int position, Gifs model) {
         mListOfGifs.add(position, model);
         notifyItemInserted(position);
     }
@@ -112,7 +115,6 @@ public class ImagePreviewAdapter extends RecyclerView.Adapter<ImagePreviewAdapte
         mListOfGifs.add(toPosition, model);
         notifyItemMoved(fromPosition, toPosition);
     }
-    
 
     public static class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final ImageView mImageView;
@@ -133,10 +135,12 @@ public class ImagePreviewAdapter extends RecyclerView.Adapter<ImagePreviewAdapte
 
         @Override
         public void onClick(View v) {
+            //convert Gifs into parcelable
             Intent intent = new Intent(mImageView.getContext(), ViewGifActivity.class);
             intent.putExtra(ViewGifActivity.GIF_URL_KEY, selectedGif.getUrlToLoad());
             intent.putExtra(ViewGifActivity.GIF_TITLE_KEY, selectedGif.getImageName());
             intent.putExtra(ViewGifActivity.GIF_BASE_PATH, selectedGif.getBasePath());
+            intent.putExtra(ViewGifActivity.GIF_SOURCE, selectedGif.getGifSource());
             mImageView.getContext().startActivity(intent);
         }
     }

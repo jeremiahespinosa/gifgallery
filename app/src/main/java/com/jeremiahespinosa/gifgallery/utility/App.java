@@ -126,6 +126,11 @@ public class App extends Application {
                 && networkInfo.isConnected();
     }
 
+    /**
+     * @param context
+     * @param message
+     * @return a built progress dialog
+     */
     public static ProgressDialog getProgressDialog(Context context, String message) {
         ProgressDialog progressDialog = new ProgressDialog(context);
         progressDialog.setMessage(message);
@@ -144,6 +149,12 @@ public class App extends Application {
         return progressDialog;
     }
 
+    /**
+     *
+     * @param context
+     * @param messageId
+     * @return a built progress dialog
+     */
     public static ProgressDialog getProgressDialog(Context context, int messageId) {
         return getProgressDialog(context, getStringById(messageId));
     }

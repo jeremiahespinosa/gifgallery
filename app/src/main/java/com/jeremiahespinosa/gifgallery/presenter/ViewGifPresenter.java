@@ -2,7 +2,6 @@ package com.jeremiahespinosa.gifgallery.presenter;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
@@ -18,11 +17,9 @@ import com.google.api.client.http.HttpResponse;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
-import com.google.api.services.drive.model.FileList;
 import com.jeremiahespinosa.gifgallery.R;
 import com.jeremiahespinosa.gifgallery.utility.App;
 import com.jeremiahespinosa.gifgallery.utility.PrefUtils;
-import com.jeremiahespinosa.gifgallery.utility.models.Gifs;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -38,29 +35,39 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
+ * This class will handle all the heavy lifting
+ * for the ViewGifActivity.
+ *
+ * If the user is trying to view a gif from a
+ * service then the image will be downloaded
+ * first otherwise the gif will be set to load
+ *
  * Created by jespinosa on 6/23/15.
  */
 public class ViewGifPresenter {
 
     private static String TAG = "ViewGifPresenter";
     private Context mContext;
+
     public ViewGifPresenter(Context context) {
         mContext = context;
     }
 
-    public void loadGifIntoImageView(String gifUrl, String basePath, ImageView gifImageView){
+    public void loadGifIntoImageView(String gifSource, String gifUrl, String basePath, ImageView gifImageView){
         if(gifUrl != null && !gifUrl.isEmpty()){
 
             if(basePath != null && !basePath.isEmpty()){
-                //download the image first
-                if(gifUrl.contains(PrefUtils.getPrefDriveToken())){
+                //download the image first before loading
+
+                if(gifSource.equals(App.getStringById(R.string.title_dropbox))){
                     getImageFromDropbox(basePath, gifImageView);
                 }
                 else{
                     getImageFromGoogleDrive(basePath, gifImageView);
                 }
             }
-            else{   //local so just load it
+            else{
+                //local file so just load the image
                 Glide.with(mContext)
                         .load(gifUrl)
                         .asGif()
@@ -78,7 +85,7 @@ public class ViewGifPresenter {
         credential.setSelectedAccountName(PrefUtils.getPrefDriveUser());
 
         Drive service = new Drive.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), credential).setApplicationName(App.getStringById(R.string.app_name)).build();
-        new DownloadFileFromGoogleDrive(service, gifImageView, basePath).execute();
+        new DownloadFileFromGoogleDrive(mContext, service, gifImageView, basePath).execute();
     }
 
     protected void getImageFromDropbox(String basePath, ImageView gifImageView){
@@ -137,9 +144,9 @@ public class ViewGifPresenter {
             String slashlessString = dropboxGifPath;
             slashlessString = slashlessString.substring(1);
 
-            String urlToDownload2 = dropboxUrl +slashlessString+"?"+"access_token="+ PrefUtils.getPrefDropboxAccessToken();
+            String urlToDownload = dropboxUrl +slashlessString+"?"+"access_token="+ PrefUtils.getPrefDropboxAccessToken();
 
-            URL url = new URL(urlToDownload2);
+            URL url = new URL(urlToDownload);
             URLConnection urlConnection = url.openConnection();
 
             return new BufferedInputStream(urlConnection.getInputStream());
@@ -193,14 +200,14 @@ public class ViewGifPresenter {
         ProgressDialog progressDialog;
         private Drive driveService;
         private ImageView imageView;
-        private String basePath;
+        private String pathToDownload;
 
-        public DownloadFileFromGoogleDrive(Drive fileSelected, ImageView gifImageView, String pathToDownload){
+        public DownloadFileFromGoogleDrive(Context context, Drive fileSelected, ImageView gifImageView, String basePath){
             driveService = fileSelected;
-            basePath = pathToDownload;
+            pathToDownload = basePath;
             imageView = gifImageView;
             
-            progressDialog = App.getProgressDialog(mContext, "Downloading");
+            progressDialog = App.getProgressDialog(context, "Downloading");
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.setCancelable(false);
             progressDialog.setIndeterminate(true);
@@ -210,7 +217,7 @@ public class ViewGifPresenter {
         @Override
         protected String doInBackground(Void... params) {
 
-            InputStream driveFileContents = downloadFile(driveService, basePath);
+            InputStream driveFileContents = downloadFile(driveService, pathToDownload);
 
             String dateBasedFileName_timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.US).format(new Date());
 
@@ -218,6 +225,7 @@ public class ViewGifPresenter {
                     getStorageDirectory(App.getStringById(R.string.app_name)).getPath()
                             + java.io.File.separator
                             + "GIF_"+dateBasedFileName_timeStamp + ".gif";
+
             java.io.File fileOnDisk = new java.io.File(destinationFilename);
 
             if(driveFileContents != null){
@@ -231,7 +239,7 @@ public class ViewGifPresenter {
          * Download a file's content.
          *
          * @param service Drive API service instance.
-         * @param Gifs gif object containing the url to download
+         * @param basePath the url to download
          * @return InputStream containing the file's content if successful,
          *         {@code null} otherwise.
          */

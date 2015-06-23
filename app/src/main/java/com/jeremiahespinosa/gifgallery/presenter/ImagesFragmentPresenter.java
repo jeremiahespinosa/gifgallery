@@ -1,11 +1,10 @@
 package com.jeremiahespinosa.gifgallery.presenter;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
-import android.util.Log;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -24,13 +23,17 @@ import com.jeremiahespinosa.gifgallery.ui.adapter.ImagePreviewAdapter;
 import com.jeremiahespinosa.gifgallery.ui.fragments.SettingsPreferenceFragment;
 import com.jeremiahespinosa.gifgallery.utility.App;
 import com.jeremiahespinosa.gifgallery.utility.PrefUtils;
-import com.jeremiahespinosa.gifgallery.utility.models.Gifs;
+import com.jeremiahespinosa.gifgallery.models.Gifs;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
 /**
+ * This class will handle all the heavy lifting for the ImagesFragment.
+ * The user can load gifs from storage, load gifs from dropbox, and
+ * load gifs from google drive
+ *
  * Created by jespinosa on 6/23/15.
  */
 public class ImagesFragmentPresenter {
@@ -40,11 +43,13 @@ public class ImagesFragmentPresenter {
     private Context mContext;
     private ProgressBar loadingIndicator;
     private ImagePreviewAdapter imagePreviewAdapter;
+    private CardView emptyGifsCard;
 
-    public ImagesFragmentPresenter(Context context, ProgressBar progressBar, ImagePreviewAdapter adapter) {
+    public ImagesFragmentPresenter(Context context, ProgressBar progressBar, ImagePreviewAdapter adapter, CardView cardView) {
         mContext = context;
         loadingIndicator = progressBar;
         imagePreviewAdapter = adapter;
+        emptyGifsCard = cardView;
     }
 
     public void loadGifsFromStorage(){
@@ -58,7 +63,7 @@ public class ImagesFragmentPresenter {
 
         while(mCursor.moveToNext()){
 
-            // get the media type. ion can show images for both regular images AND video.
+            // get the media type.
             int mediaType = mCursor.getInt(mCursor.getColumnIndex(MediaStore.Files.FileColumns.MEDIA_TYPE));
 
             if(mediaType != MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE){
@@ -66,15 +71,15 @@ public class ImagesFragmentPresenter {
             }
 
             String filePath  = mCursor.getString(mCursor.getColumnIndex(MediaStore.Files.FileColumns.DATA));
-            File file = new File(filePath);
 
-            //turn this file into a file uri if necessary
-            if(file.exists()){
-                if(filePath.contains("gif")){
-//                    Log.d(TAG, "we have a gif->" + filePath);
+            if(filePath.contains("gif")){
+                //we only want gifs to be loaded
+
+                File gifFile = new File(filePath);
+                if(gifFile.exists()){
                     Gifs gif = new Gifs();
                     gif.setUrlToLoad(filePath);
-
+                    gif.setGifSource(App.getStringById(R.string.title_local));
                     imagePreviewAdapter.addAnotherItem(gif);
                 }
             }
@@ -82,31 +87,22 @@ public class ImagesFragmentPresenter {
 
         if(imagePreviewAdapter.getItemCount() < 1){
             App.showShortToast("No gifs found");
+            showEmptyGifsCard();
         }
 
         hideLoadingIndicator();
     }
 
-
     public void loadGifsFromDropbox(){
 
         if(App.hasInternetConnection()){
 
-            showLoadingIndicator();
-
-            AppKeyPair appKeys = new AppKeyPair(SettingsPreferenceFragment.dropboxAppKey, SettingsPreferenceFragment.dropboxAppSecret);
-            AndroidAuthSession session = new AndroidAuthSession(appKeys);
-            session.setOAuth2AccessToken(PrefUtils.getPrefDropboxAccessToken());
-
-            DropboxAPI<AndroidAuthSession> mDBApi = new DropboxAPI<AndroidAuthSession>(session);
-
-            new DownloadDropboxGifsTask(mDBApi).execute();
+            new LoadDropboxGifsTask().execute();
         }
         else{
             App.showShortToast(App.getStringById(R.string.no_network));
         }
     }
-
 
     public void loadGifsFromGoogleDrive(){
 
@@ -116,17 +112,13 @@ public class ImagesFragmentPresenter {
 
         Drive service = new Drive.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), credential).setApplicationName(App.getStringById(R.string.app_name)).build();
 
-        showLoadingIndicator();
-
         new LoadFilesFromGoogleDriveTask(service).execute();
     }
 
-    private class DownloadDropboxGifsTask extends AsyncTask<Void, Long, ArrayList<Gifs>> {
+    private class LoadDropboxGifsTask extends AsyncTask<Void, Long, ArrayList<Gifs>> {
 
-        private DropboxAPI<?> mApi;
-
-        public DownloadDropboxGifsTask(DropboxAPI<?> api) {
-            mApi = api;
+        public LoadDropboxGifsTask() {
+            showLoadingIndicator();
         }
 
         @Override
@@ -138,21 +130,26 @@ public class ImagesFragmentPresenter {
                 AppKeyPair appKeys = new AppKeyPair(SettingsPreferenceFragment.dropboxAppKey, SettingsPreferenceFragment.dropboxAppSecret);
                 AndroidAuthSession session = new AndroidAuthSession(appKeys);
                 session.setOAuth2AccessToken(PrefUtils.getPrefDropboxAccessToken());
-                mApi = new DropboxAPI<AndroidAuthSession>(session);
+                DropboxAPI<AndroidAuthSession> mDBApi = new DropboxAPI<AndroidAuthSession>(session);
 
                 DropboxAPI.DeltaPage<DropboxAPI.Entry> deltaPage;
                 String cursor ="";
 
                 do {
-                    deltaPage = mApi.delta(cursor);
+                    //calling delta gives us all files
+                    deltaPage = mDBApi.delta(cursor);
                     cursor = deltaPage.cursor;
 
                     for(DropboxAPI.DeltaEntry existingEntry : deltaPage.entries){
 
+                        //looking for only gif file types
                         if(((DropboxAPI.Entry)existingEntry.metadata).mimeType != null &&
                                 ((DropboxAPI.Entry)existingEntry.metadata).mimeType.contains("image/gif")){
+
                             Gifs gif = new Gifs();
                             gif.setBasePath(((DropboxAPI.Entry)existingEntry.metadata).path);
+
+                            //building url so that the adapter will be able to just load the thumbnail
                             gif.setUrlToLoad(
                                     "https://api-content.dropbox.com/1/thumbnails/auto"
                                             +((DropboxAPI.Entry)existingEntry.metadata).path
@@ -160,6 +157,8 @@ public class ImagesFragmentPresenter {
                                             +"format=jpeg&"+"size=m&"+"access_token="+PrefUtils.getPrefDropboxAccessToken());
 
                                     gif.setImageName(((DropboxAPI.Entry) existingEntry.metadata).fileName());
+
+                            gif.setGifSource(App.getStringById(R.string.title_dropbox));
 
                             listOfGifsAvailable.add(gif);
                         }
@@ -182,16 +181,22 @@ public class ImagesFragmentPresenter {
                 imagePreviewAdapter.addAnotherItem(gif);
             }
 
+            if(imagePreviewAdapter.getItemCount() < 1){
+                showEmptyGifsCard();
+            }
+
             hideLoadingIndicator();
         }
 
     }
 
+    //Loading the thumbnails from drive using the drive sdk
     private class LoadFilesFromGoogleDriveTask extends AsyncTask<Void, Void, ArrayList<Gifs>>{
 
         private Drive mService;
 
         public LoadFilesFromGoogleDriveTask(Drive service) {
+            showLoadingIndicator();
             mService = service;
         }
 
@@ -216,6 +221,10 @@ public class ImagesFragmentPresenter {
                 imagePreviewAdapter.addAnotherItem(gif);
             }
 
+            if(imagePreviewAdapter.getItemCount() < 1){
+                showEmptyGifsCard();
+            }
+
             hideLoadingIndicator();
         }
     }
@@ -234,6 +243,7 @@ public class ImagesFragmentPresenter {
 
         do {
             try {
+                //requesting list of files in google drive
                 FileList files = request.execute();
 
                 for(int i = 0; i < files.getItems().size(); i++){
@@ -244,11 +254,13 @@ public class ImagesFragmentPresenter {
                             gif.setBasePath(files.getItems().get(i).getDownloadUrl());
                             gif.setImageName(files.getItems().get(i).getOriginalFilename());
                             gif.setUrlToLoad(files.getItems().get(i).getThumbnailLink());
+                            gif.setGifSource(App.getStringById(R.string.title_drive));
                             result.add(gif);
                         }
                     }
                 }
 
+                //this will be used in pagination. here is only used to keep running through all the files searching
                 request.setPageToken(files.getNextPageToken());
 
             } catch (IOException e) {
@@ -267,5 +279,13 @@ public class ImagesFragmentPresenter {
 
     private void showLoadingIndicator(){
         loadingIndicator.setVisibility(View.VISIBLE);
+    }
+
+    private void hideEmptyGifsCard(){
+        emptyGifsCard.setVisibility(View.GONE);
+    }
+
+    private void showEmptyGifsCard(){
+        emptyGifsCard.setVisibility(View.VISIBLE);
     }
 }

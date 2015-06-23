@@ -51,11 +51,6 @@ public class SettingsPreferenceFragment extends PreferenceFragment implements Pr
     public static String dropboxAppKey = "wyrfili22wvit59";
     public static String dropboxAppSecret = "gqh8gdzgp8sctak";
 
-    private static final int REQUEST_LINK_TO_DBX = 91;
-
-    boolean isUserSignedIntoDropbox;
-
-    Drive driveServiceClient;
     GoogleAccountCredential credential;
 
     // In the class declaration section:
@@ -72,21 +67,16 @@ public class SettingsPreferenceFragment extends PreferenceFragment implements Pr
         mDBApi = new DropboxAPI<AndroidAuthSession>(session);
 
         dropboxPreference = findPreference(SettingsActivity.KEY_PREF_DROPBOX);
-
         googleDrivePreference = findPreference(SettingsActivity.KEY_PREF_GOOGLE_DRIVE);
 
         dropboxPreference.setOnPreferenceClickListener(this);
         googleDrivePreference.setOnPreferenceClickListener(this);
 
-        isUserSignedIntoDropbox = !PrefUtils.getPrefDropboxAccessToken().isEmpty();
-
-        boolean isUserSignedIntoDrive = !PrefUtils.getPrefDriveToken().isEmpty();
-
-        if (isUserSignedIntoDropbox) {
+        if (!PrefUtils.getPrefDropboxAccessToken().isEmpty()) {
             dropboxPreference.setTitle(App.getStringById(R.string.currently_in_dropbox));
         }
-        if (isUserSignedIntoDrive) {
-            dropboxPreference.setTitle(App.getStringById(R.string.currently_in_drive));
+        if ( !PrefUtils.getPrefDriveToken().isEmpty()) {
+            googleDrivePreference.setTitle(App.getStringById(R.string.currently_in_drive));
         }
     }
 
@@ -95,7 +85,6 @@ public class SettingsPreferenceFragment extends PreferenceFragment implements Pr
         super.onResume();
         if (mDBApi.getSession().authenticationSuccessful()) {
             try {
-
                 // Required to complete auth, sets the access token on the session
                 mDBApi.getSession().finishAuthentication();
 
@@ -104,7 +93,6 @@ public class SettingsPreferenceFragment extends PreferenceFragment implements Pr
                 PrefUtils.setPrefDropboxAccessToken(accessToken);
 
                 dropboxPreference.setTitle(App.getStringById(R.string.currently_in_dropbox));
-
 
             } catch (IllegalStateException e) {
                 e.printStackTrace();
@@ -164,28 +152,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment implements Pr
 
                     credential.setSelectedAccountName(accountName);
 
-//                    Thread t = new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            try {
-//                                String token = credential.getToken();
-//                                PrefUtils.setPrefGoogleDriveToken(token);
-//
-//                            } catch (Exception e) {
-//                                e.printStackTrace();
-//                                if (e instanceof UserRecoverableAuthException) {
-//                                    getActivity().startActivityForResult(((UserRecoverableAuthException) e).getIntent(), COMPLETE_AUTHORIZATION_REQUEST_CODE);
-//                                }
-//                            }
-//                        }
-//
-//                    });
-//                    t.start();
-
                     new GetTokenAsyncTask(getActivity()).execute();
-
-                    googleDrivePreference.setTitle(App.getStringById(R.string.currently_in_drive));
-                    driveServiceClient = new Drive.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), credential).setApplicationName(App.getStringById(R.string.app_name)).build();
                 }
                 else {
                     Log.i(TAG, "user cancelled request code pick");
@@ -230,7 +197,6 @@ public class SettingsPreferenceFragment extends PreferenceFragment implements Pr
         protected Boolean doInBackground(Void... params) {
 
             try{
-                Log.i(TAG, "trying to get access_token");
                 String access_token = credential.getToken();
 
                 PrefUtils.setPrefGoogleDriveToken(access_token);
@@ -256,7 +222,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment implements Pr
                 mDialog.dismiss();
 
             if(result) {
-                googleDrivePreference.setTitle("Currently signed into Google Drive");
+                googleDrivePreference.setTitle(App.getStringById(R.string.currently_in_drive));
             }
 
         }

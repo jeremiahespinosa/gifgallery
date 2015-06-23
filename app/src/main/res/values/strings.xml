@@ -11,4 +11,5 @@
     <string name="title_local">Local</string>
     <string name="title_dropbox">Dropbox</string>
     <string name="title_drive">Google Drive</string>
+    <string name="no_gifs">Uh Oh! There seems to not be any gifs</string>
 </resources>

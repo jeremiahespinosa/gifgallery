@@ -2,200 +2,179 @@
 <items version="2" >
 
     <item
-        jar="/Users/jespinosa/.gradle/caches/modules-2/files-2.1/com.google.oauth-client/google-oauth-client/1.20.0/1d086ac5756475ddf451af2e2df6e288d18608ca/google-oauth-client-1.20.0.jar"
+        jar="C:\Users\jespinosa\.gradle\caches\modules-2\files-2.1\com.google.oauth-client\google-oauth-client\1.20.0\1d086ac5756475ddf451af2e2df6e288d18608ca\google-oauth-client-1.20.0.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="1d086ac5756475ddf451af2e2df6e288d18608ca">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/google-oauth-client-1.20.0-b5603435adc3736cc78026b6654f66c3967cdf8f.jar" />
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\google-oauth-client-1.20.0-0fe4ab570437c9b48b4d48b41c5c977c08840c86.jar" />
     </item>
     <item
-        jar="/Users/jespinosa/.gradle/caches/modules-2/files-2.1/com.google.http-client/google-http-client-gson/1.20.0/9204765f39000f6109c927ac66c7963bf9c7df19/google-http-client-gson-1.20.0.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="9204765f39000f6109c927ac66c7963bf9c7df19">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/google-http-client-gson-1.20.0-95fde3f855fe40304edf8cf7d57cfab791e7a2e3.jar" />
-    </item>
-    <item
-        jar="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/exploded-aar/com.android.support/palette-v7/22.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="060b30a619b8d3ba053e1d7dc08b3fdf0dd81530">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/classes-5128d266ddba43c44920e34b01bcd745c01b2239.jar" />
-    </item>
-    <item
-        jar="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/22.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="97f7e239e86ef994de894818fdd8a71d2e89d6aa">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/classes-172516b63bcb9c162a02c61a90052a56a3bb07a9.jar" />
-    </item>
-    <item
-        jar="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/22.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="5b37cf49773f7f17aca9830efd3053b0cac56728">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/classes-d5b1b67a19c83ab1ed5102ec49c9a2a3108154b2.jar" />
-    </item>
-    <item
-        jar="/Users/jespinosa/.gradle/caches/modules-2/files-2.1/com.google.api-client/google-api-client-android/1.20.0/5673179575c32b69a474334255c3044adf18d40/google-api-client-android-1.20.0.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="05673179575c32b69a474334255c3044adf18d40">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/google-api-client-android-1.20.0-4ead778e955c587c414395e3179d2405416c2ce3.jar" />
-    </item>
-    <item
-        jar="/Users/jespinosa/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/1.3.9/40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf/jsr305-1.3.9.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/jsr305-1.3.9-29695e828af75e2e075f37c6286db61ced9c079e.jar" />
-    </item>
-    <item
-        jar="/Users/jespinosa/.gradle/caches/modules-2/files-2.1/com.google.http-client/google-http-client/1.20.0/93d82db2bca534960253f43424b2ba9d7638b4d2/google-http-client-1.20.0.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="93d82db2bca534960253f43424b2ba9d7638b4d2">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/google-http-client-1.20.0-40c693667c55f3d91590797c768ede324da17f45.jar" />
-    </item>
-    <item
-        jar="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/classes-72df41c17ecc96c21ebd90cbc162d2c1f8745f35.jar" />
-    </item>
-    <item
-        jar="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/7.5.0/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="a78183f30e769a98ab4820794f597763088d3065">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/classes-642380b0235b345666632e6f47890beb444a6174.jar" />
-    </item>
-    <item
-        jar="/Users/jespinosa/.gradle/caches/modules-2/files-2.1/com.google.guava/guava-jdk5/13.0/381ae6c8add7c98e9bcddb1e0b898400cd6fc3f7/guava-jdk5-13.0.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="381ae6c8add7c98e9bcddb1e0b898400cd6fc3f7">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/guava-jdk5-13.0-a52ca2bc55b23fd494d4d41b9e2c215e14693977.jar" />
-    </item>
-    <item
-        jar="/Users/jespinosa/.gradle/caches/modules-2/files-2.1/com.google.http-client/google-http-client-jackson2/1.20.0/2408070b2abec043624d35b35e30450f1b663858/google-http-client-jackson2-1.20.0.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="2408070b2abec043624d35b35e30450f1b663858">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/google-http-client-jackson2-1.20.0-9744697fa660b0a34e06ae3f743e2c1faf23e21d.jar" />
-    </item>
-    <item
-        jar="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/exploded-aar/com.android.support/gridlayout-v7/22.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="4c72b7305d9c42d7729d66694dc984f69896a844">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/classes-b386b3e1c5651866cf1372f2ebb4417afdc4cc40.jar" />
-    </item>
-    <item
-        jar="/Users/jespinosa/.gradle/caches/modules-2/files-2.1/com.google.api-client/google-api-client/1.20.0/d3e66209ae9e749b2d6833761e7885f60f285564/google-api-client-1.20.0.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="d3e66209ae9e749b2d6833761e7885f60f285564">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/google-api-client-1.20.0-2f3127d2c40b78bcae009489dafd9deef670c299.jar" />
-    </item>
-    <item
-        jar="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-identity/7.5.0/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="d405025c600055237c171a0bbabaa49d69696573">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/classes-ac8899602b9df15536cb95dfa5026a949b2fee48.jar" />
-    </item>
-    <item
-        jar="/Users/jespinosa/Documents/Developer/adt-bundle-mac-x86_64-20140702/sdk/extras/android/m2repository/com/android/support/support-annotations/22.2.0/support-annotations-22.2.0.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.0-ae96d14868441601c1edf6650569c431f41a73a0.jar" />
-    </item>
-    <item
-        jar="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/22.2.0/jars/libs/internal_impl-22.2.0.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="0632f06970823b7e3436f649bfa65b47035c91d0">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-62846719a909340adffaeb71b0e17425c2b0b30f.jar" />
-    </item>
-    <item
-        jar="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/classes-f883562218d46062fc3af04d86f1751eb852b695.jar" />
-    </item>
-    <item
-        jar="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/22.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="dcf8c83c3dead00a6c4fe313e95f7aaca20dc641">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/classes-ff2a1fc088f61fd294b81c977d32e28b643fed15.jar" />
-    </item>
-    <item
-        jar="/Users/jespinosa/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.1.3/f6c3aed1cdfa21b5c1737c915186ea93a95a58bd/jackson-core-2.1.3.jar"
+        jar="C:\Users\jespinosa\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-core\2.1.3\f6c3aed1cdfa21b5c1737c915186ea93a95a58bd\jackson-core-2.1.3.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="f6c3aed1cdfa21b5c1737c915186ea93a95a58bd">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/jackson-core-2.1.3-3b0a2e7881fb7c59ae9b40e21e79c99b357cf02c.jar" />
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\jackson-core-2.1.3-b83d20e0a790d15724d142577e7926e7b6e43699.jar" />
     </item>
     <item
-        jar="/Users/jespinosa/git-bitbucket/Gallery/app/libs/dropbox-android-sdk-1.6.3.jar"
+        jar="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\22.2.0\jars\classes.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="986e7a58e925c6f91b88ae8d3224a0550b65acc7">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/dropbox-android-sdk-1.6.3-328657915b44857673f4666b28ccee55ce086bae.jar" />
+        sha1="97f7e239e86ef994de894818fdd8a71d2e89d6aa">
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\classes-dbd88407672d412e691f36b13a8ca753dea5cbda.jar" />
     </item>
     <item
-        jar="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/exploded-aar/com.android.support/design/22.2.0/jars/classes.jar"
+        jar="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\exploded-aar\com.android.support\gridlayout-v7\22.2.0\jars\classes.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="fc63b820d54c8a27a3a614bdd93920e0076581c2">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/classes-39690909a44d63a2faabd4283c4fde61e70cb24a.jar" />
+        sha1="4c72b7305d9c42d7729d66694dc984f69896a844">
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\classes-a83f6793405f1844ee48deb459b2b182ce86b586.jar" />
     </item>
     <item
-        jar="/Users/jespinosa/.gradle/caches/modules-2/files-2.1/com.google.http-client/google-http-client-android/1.20.0/313dc99a7963523871495897ca11aa8472b3c6fd/google-http-client-android-1.20.0.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="313dc99a7963523871495897ca11aa8472b3c6fd">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/google-http-client-android-1.20.0-b4d95972a6af3f4dd7d05620b4b9facc25c4d8b9.jar" />
-    </item>
-    <item
-        jar="/Users/jespinosa/git-bitbucket/Gallery/app/libs/json_simple-1.1.jar"
+        jar="C:\Users\jespinosa\git\gifgallery\app\libs\json_simple-1.1.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="5e303a03d04e6788dddfa3655272580ae0fc13bb">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/json_simple-1.1-fa2233988af61a9b72c8699ce4065fb78db58bbe.jar" />
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\json_simple-1.1-986bdf9ca56e28991eba2a62516b608252c761ef.jar" />
     </item>
     <item
-        jar="/Users/jespinosa/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.1/2e66da15851f9f5b5079228f856c2f090ba98c38/gson-2.1.jar"
+        jar="C:\adt-bundle-windows-x86_64-20130522\sdk\extras\android\m2repository\com\android\support\support-annotations\22.2.0\support-annotations-22.2.0.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="2e66da15851f9f5b5079228f856c2f090ba98c38">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/gson-2.1-de541a2e6f65b5742f59f4a60a781bb2e6ce4804.jar" />
+        sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\support-annotations-22.2.0-f25e270805be6b82f037a5e4bcd38e384573295a.jar" />
     </item>
     <item
-        jar="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/libs/internal_impl-22.2.0.jar"
+        jar="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\exploded-aar\com.android.support\design\22.2.0\jars\classes.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-ffb9dcc213a8c8fa1f2948286f5266eeee0d4335.jar" />
+        sha1="fc63b820d54c8a27a3a614bdd93920e0076581c2">
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\classes-f080d944e998ad381917d62cbbd6a92b06733d46.jar" />
     </item>
     <item
-        jar="/Users/jespinosa/.gradle/caches/modules-2/files-2.1/com.google.apis/google-api-services-drive/v2-rev173-1.20.0/dd4f7d3ada3bbcca91013d25be275c14b2f4afae/google-api-services-drive-v2-rev173-1.20.0.jar"
+        jar="C:\Users\jespinosa\.gradle\caches\modules-2\files-2.1\com.google.apis\google-api-services-drive\v2-rev173-1.20.0\dd4f7d3ada3bbcca91013d25be275c14b2f4afae\google-api-services-drive-v2-rev173-1.20.0.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="dd4f7d3ada3bbcca91013d25be275c14b2f4afae">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/google-api-services-drive-v2-rev173-1.20.0-256cc172aebab1b06605755c48ccd40e0b43f2d0.jar" />
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\google-api-services-drive-v2-rev173-1.20.0-8908ed53a9aa0ae6fa88430c6222f866ea0119e2.jar" />
     </item>
     <item
-        jar="/Users/jespinosa/.gradle/caches/modules-2/files-2.1/com.github.bumptech.glide/glide/3.5.2/ecf534dba3a8446ce84cbb797d314763be212a68/glide-3.5.2.jar"
+        jar="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\7.5.0\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="a78183f30e769a98ab4820794f597763088d3065">
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\classes-eac4a329deeca5473a5ee04dd674a55644385abe.jar" />
+    </item>
+    <item
+        jar="C:\Users\jespinosa\.gradle\caches\modules-2\files-2.1\com.github.bumptech.glide\glide\3.5.2\ecf534dba3a8446ce84cbb797d314763be212a68\glide-3.5.2.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="ecf534dba3a8446ce84cbb797d314763be212a68">
-        <dex dex="/Users/jespinosa/git-bitbucket/Gallery/app/build/intermediates/pre-dexed/debug/glide-3.5.2-f60e434e6d35a74925f789cc31959eeb2717319f.jar" />
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\glide-3.5.2-769a304e991b9ab5689f041f734a441717371033.jar" />
+    </item>
+    <item
+        jar="C:\Users\jespinosa\.gradle\caches\modules-2\files-2.1\com.google.http-client\google-http-client-gson\1.20.0\9204765f39000f6109c927ac66c7963bf9c7df19\google-http-client-gson-1.20.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="9204765f39000f6109c927ac66c7963bf9c7df19">
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\google-http-client-gson-1.20.0-18f8433d4e495ac15a0d5f60d0aa52d25adfa7ea.jar" />
+    </item>
+    <item
+        jar="C:\Users\jespinosa\.gradle\caches\modules-2\files-2.1\com.google.http-client\google-http-client-jackson2\1.20.0\2408070b2abec043624d35b35e30450f1b663858\google-http-client-jackson2-1.20.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="2408070b2abec043624d35b35e30450f1b663858">
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\google-http-client-jackson2-1.20.0-cf6da4ca29227f451f8253422e7e530a5945f0e4.jar" />
+    </item>
+    <item
+        jar="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\classes-a6ebb9b1fe35797ef7fbcb67e0fe50f655e0ad1a.jar" />
+    </item>
+    <item
+        jar="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\jars\libs\internal_impl-22.2.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\internal_impl-22.2.0-0f41e00d741c32c498a8f9b3621c4b1e1b1726db.jar" />
+    </item>
+    <item
+        jar="C:\Users\jespinosa\git\gifgallery\app\libs\dropbox-android-sdk-1.6.3.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="986e7a58e925c6f91b88ae8d3224a0550b65acc7">
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\dropbox-android-sdk-1.6.3-5a9662eefda003e7ff557008d63f3577ecb77b5e.jar" />
+    </item>
+    <item
+        jar="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-identity\7.5.0\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="d405025c600055237c171a0bbabaa49d69696573">
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\classes-9194ae9ca6f78099291780cc1c035df863c016be.jar" />
+    </item>
+    <item
+        jar="C:\Users\jespinosa\.gradle\caches\modules-2\files-2.1\com.google.guava\guava-jdk5\13.0\381ae6c8add7c98e9bcddb1e0b898400cd6fc3f7\guava-jdk5-13.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="381ae6c8add7c98e9bcddb1e0b898400cd6fc3f7">
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\guava-jdk5-13.0-1c1a74387a1a4ffc11435583d81ceb70e9c81224.jar" />
+    </item>
+    <item
+        jar="C:\Users\jespinosa\.gradle\caches\modules-2\files-2.1\com.google.http-client\google-http-client\1.20.0\93d82db2bca534960253f43424b2ba9d7638b4d2\google-http-client-1.20.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="93d82db2bca534960253f43424b2ba9d7638b4d2">
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\google-http-client-1.20.0-76258742b93a3e1bd7ca94be9df522655e8bd92f.jar" />
+    </item>
+    <item
+        jar="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\22.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="5b37cf49773f7f17aca9830efd3053b0cac56728">
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\classes-a9393fb731f68a502a86d98ac4227d263e448b2f.jar" />
+    </item>
+    <item
+        jar="C:\Users\jespinosa\.gradle\caches\modules-2\files-2.1\com.google.api-client\google-api-client-android\1.20.0\5673179575c32b69a474334255c3044adf18d40\google-api-client-android-1.20.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="05673179575c32b69a474334255c3044adf18d40">
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\google-api-client-android-1.20.0-7e26ccc43086c82f99989c6b3851f556edd1d1e7.jar" />
+    </item>
+    <item
+        jar="C:\Users\jespinosa\.gradle\caches\modules-2\files-2.1\com.google.http-client\google-http-client-android\1.20.0\313dc99a7963523871495897ca11aa8472b3c6fd\google-http-client-android-1.20.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="313dc99a7963523871495897ca11aa8472b3c6fd">
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\google-http-client-android-1.20.0-a4a050e14e2a0cd63506628dbbcd6b30261b9d4a.jar" />
+    </item>
+    <item
+        jar="C:\Users\jespinosa\.gradle\caches\modules-2\files-2.1\com.google.code.findbugs\jsr305\1.3.9\40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf\jsr305-1.3.9.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf">
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\jsr305-1.3.9-2298c764b0170d835c7b95baa8d8c01c94be9f3a.jar" />
+    </item>
+    <item
+        jar="C:\Users\jespinosa\.gradle\caches\modules-2\files-2.1\com.google.api-client\google-api-client\1.20.0\d3e66209ae9e749b2d6833761e7885f60f285564\google-api-client-1.20.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="d3e66209ae9e749b2d6833761e7885f60f285564">
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\google-api-client-1.20.0-bed1e5c578a2f682fd20fb0085f2e32dbfb98988.jar" />
+    </item>
+    <item
+        jar="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\classes-a7a74d3720d2066e4ea917fd6e795242b0744b94.jar" />
+    </item>
+    <item
+        jar="C:\Users\jespinosa\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.1\2e66da15851f9f5b5079228f856c2f090ba98c38\gson-2.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="2e66da15851f9f5b5079228f856c2f090ba98c38">
+        <dex dex="C:\Users\jespinosa\git\gifgallery\app\build\intermediates\pre-dexed\debug\gson-2.1-466b1f23e5c242ac1e17d0925d47acd8bdf527ff.jar" />
     </item>
 
 </items>

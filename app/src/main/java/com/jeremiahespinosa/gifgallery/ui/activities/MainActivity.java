@@ -6,7 +6,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import com.jeremiahespinosa.gifgallery.R;
 import com.jeremiahespinosa.gifgallery.ui.adapter.ViewPagerAdapter;
@@ -95,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     protected void onResume() {
         super.onResume();
 
+        //performing here helps with updating the tabs once the user has signed into a service
         setupViewPager();
     }
 

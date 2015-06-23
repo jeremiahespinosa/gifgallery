@@ -1,4 +1,4 @@
-package com.jeremiahespinosa.gifgallery.utility.widgets;
+package com.jeremiahespinosa.gifgallery.ui.widgets;
 
 import android.content.Context;
 import android.util.AttributeSet;
