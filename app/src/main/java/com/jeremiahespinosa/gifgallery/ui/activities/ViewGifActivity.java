@@ -18,10 +18,6 @@ import com.jeremiahespinosa.gifgallery.utility.App;
 public class ViewGifActivity extends Activity {
 
     private static String TAG = "ViewGifActivity";
-    public static String GIF_URL_KEY = "gif_url_key";
-    public static String GIF_TITLE_KEY = "gif_title_key";
-    public static String GIF_BASE_PATH = "gif_base_path";
-    public static String GIF_SOURCE = "gif_source";
     public static String GIF_PARCEL_OBJECT = "gif_parcel_object";
 
     @Override

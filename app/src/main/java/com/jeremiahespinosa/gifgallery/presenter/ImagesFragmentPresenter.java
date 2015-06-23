@@ -78,6 +78,7 @@ public class ImagesFragmentPresenter {
                 File gifFile = new File(filePath);
                 if(gifFile.exists()){
 
+                    //creating gif this way for readability
                     Gifs gif = new Gifs(filePath, filePath, null, App.getStringById(R.string.title_local));
 
                     imagePreviewAdapter.addAnotherItem(gif);
@@ -151,6 +152,7 @@ public class ImagesFragmentPresenter {
                                     +"?"
                                     +"format=jpeg&"+"size=m&"+"access_token="+PrefUtils.getPrefDropboxAccessToken();
 
+                            //creating gif this way for readability
                             Gifs gif = new Gifs(
                                         ((DropboxAPI.Entry)existingEntry.metadata).path,
                                         thumbnailUrl,
@@ -246,7 +248,7 @@ public class ImagesFragmentPresenter {
                 for(int i = 0; i < files.getItems().size(); i++){
                     if( (files.getItems().get(i).getMimeType() != null) && files.getItems().get(i).getMimeType().contains("gif") ){
                         if(files.getItems().get(i).getThumbnailLink() != null && !files.getItems().get(i).getThumbnailLink().isEmpty()){
-
+                            //creating gif this way for readability
                             Gifs gif = new Gifs(
                                     files.getItems().get(i).getDownloadUrl(),
                                     files.getItems().get(i).getThumbnailLink(),

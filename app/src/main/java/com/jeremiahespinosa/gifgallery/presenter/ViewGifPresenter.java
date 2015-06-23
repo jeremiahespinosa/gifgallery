@@ -75,6 +75,9 @@ public class ViewGifPresenter {
                         .into(gifImageView);
             }
         }
+        else{
+            App.showShortToast("Unable to load your image");
+        }
     }
 
     private void getImageFromGoogleDrive(String basePath, ImageView gifImageView){
@@ -224,8 +227,10 @@ public class ViewGifPresenter {
                             + java.io.File.separator
                             + "GIF_"+dateBasedFileName_timeStamp + ".gif";
 
+            //create file
             java.io.File fileOnDisk = new java.io.File(destinationFilename);
 
+            //trying to write stream to the created file
             if(driveFileContents != null){
                 copyInputStreamToFile(driveFileContents, fileOnDisk);
             }
