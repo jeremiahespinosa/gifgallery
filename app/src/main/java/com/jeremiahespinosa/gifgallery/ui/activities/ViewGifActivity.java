@@ -8,7 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import com.jeremiahespinosa.gifgallery.R;
-import com.jeremiahespinosa.gifgallery.models.Gifs;
+import com.jeremiahespinosa.gifgallery.models.Gif;
 import com.jeremiahespinosa.gifgallery.presenter.ViewGifPresenter;
 import com.jeremiahespinosa.gifgallery.utility.App;
 
@@ -34,11 +34,11 @@ public class ViewGifActivity extends Activity {
 
     private void getExtras(final ImageView gifImageView, Context context){
 
-        Gifs selectedGif = null;
+        Gif selectedGif = null;
 
         Bundle extrasFromIntent = getIntent().getExtras();
         if(extrasFromIntent != null){
-            selectedGif = (Gifs) extrasFromIntent.getParcelable(GIF_PARCEL_OBJECT);
+            selectedGif = (Gif) extrasFromIntent.getParcelable(GIF_PARCEL_OBJECT);
         }
 
 

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.jeremiahespinosa.gifgallery.R;
 import com.jeremiahespinosa.gifgallery.ui.activities.ViewGifActivity;
-import com.jeremiahespinosa.gifgallery.models.Gifs;
+import com.jeremiahespinosa.gifgallery.models.Gif;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class ImagePreviewAdapter extends RecyclerView.Adapter<ImagePreviewAdapter.ImageViewHolder>  {
 
-    private ArrayList<Gifs> mListOfGifs = new ArrayList<>();
+    private ArrayList<Gif> mListOfGifs = new ArrayList<>();
 
     @Override
     public ImageViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -33,7 +33,7 @@ public class ImagePreviewAdapter extends RecyclerView.Adapter<ImagePreviewAdapte
 
     @Override
     public void onBindViewHolder(ImageViewHolder viewHolder, int position) {
-        Gifs gif = mListOfGifs.get(position);
+        Gif gif = mListOfGifs.get(position);
 
         Glide.with(viewHolder.mImageView.getContext())
                 .load(gif.getThumbnailUrlToLoad())
@@ -60,33 +60,33 @@ public class ImagePreviewAdapter extends RecyclerView.Adapter<ImagePreviewAdapte
      *
      * @param models
      */
-    public void animateTo(List<Gifs> models) {
+    public void animateTo(List<Gif> models) {
         applyAndAnimateRemovals(models);
         applyAndAnimateAdditions(models);
         applyAndAnimateMovedItems(models);
     }
 
-    private void applyAndAnimateRemovals(List<Gifs> newModels) {
+    private void applyAndAnimateRemovals(List<Gif> newModels) {
         for (int i = mListOfGifs.size() - 1; i >= 0; i--) {
-            final Gifs model = mListOfGifs.get(i);
+            final Gif model = mListOfGifs.get(i);
             if (!newModels.contains(model)) {
                 removeItem(i);
             }
         }
     }
 
-    private void applyAndAnimateAdditions(List<Gifs> newModels) {
+    private void applyAndAnimateAdditions(List<Gif> newModels) {
         for (int i = 0, count = newModels.size(); i < count; i++) {
-            final Gifs model = newModels.get(i);
+            final Gif model = newModels.get(i);
             if (!mListOfGifs.contains(model)) {
                 addItemAtPosition(i, model);
             }
         }
     }
 
-    private void applyAndAnimateMovedItems(List<Gifs> newModels) {
+    private void applyAndAnimateMovedItems(List<Gif> newModels) {
         for (int toPosition = newModels.size() - 1; toPosition >= 0; toPosition--) {
-            final Gifs model = newModels.get(toPosition);
+            final Gif model = newModels.get(toPosition);
             final int fromPosition = mListOfGifs.indexOf(model);
             if (fromPosition >= 0 && fromPosition != toPosition) {
                 moveItem(fromPosition, toPosition);
@@ -94,24 +94,24 @@ public class ImagePreviewAdapter extends RecyclerView.Adapter<ImagePreviewAdapte
         }
     }
 
-    public void addAnotherItem(Gifs model){
+    public void addAnotherItem(Gif model){
         mListOfGifs.add(model);
         notifyDataSetChanged();
     }
 
-    public Gifs removeItem(int position) {
-        final Gifs model = mListOfGifs.remove(position);
+    public Gif removeItem(int position) {
+        final Gif model = mListOfGifs.remove(position);
         notifyItemRemoved(position);
         return model;
     }
 
-    public void addItemAtPosition(int position, Gifs model) {
+    public void addItemAtPosition(int position, Gif model) {
         mListOfGifs.add(position, model);
         notifyItemInserted(position);
     }
 
     public void moveItem(int fromPosition, int toPosition) {
-        final Gifs model = mListOfGifs.remove(fromPosition);
+        final Gif model = mListOfGifs.remove(fromPosition);
         mListOfGifs.add(toPosition, model);
         notifyItemMoved(fromPosition, toPosition);
     }
@@ -119,7 +119,7 @@ public class ImagePreviewAdapter extends RecyclerView.Adapter<ImagePreviewAdapte
     public static class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final ImageView mImageView;
         public final TextView mImageTitle;
-        private Gifs selectedGif;
+        private Gif selectedGif;
 
         public ImageViewHolder(View itemView) {
             super(itemView);
@@ -129,7 +129,7 @@ public class ImagePreviewAdapter extends RecyclerView.Adapter<ImagePreviewAdapte
             mImageTitle = (TextView) itemView.findViewById(R.id.imageTitle);
         }
 
-        public void bindGif(Gifs gif){
+        public void bindGif(Gif gif){
             selectedGif = gif;
         }
 

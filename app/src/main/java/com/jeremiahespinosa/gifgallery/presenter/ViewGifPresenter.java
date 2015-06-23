@@ -18,7 +18,7 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.jeremiahespinosa.gifgallery.R;
-import com.jeremiahespinosa.gifgallery.models.Gifs;
+import com.jeremiahespinosa.gifgallery.models.Gif;
 import com.jeremiahespinosa.gifgallery.utility.App;
 import com.jeremiahespinosa.gifgallery.utility.PrefUtils;
 
@@ -54,7 +54,7 @@ public class ViewGifPresenter {
         mContext = context;
     }
 
-    public void loadGifIntoImageView(Gifs selectedGif, ImageView gifImageView){
+    public void loadGifIntoImageView(Gif selectedGif, ImageView gifImageView){
 
         if(selectedGif != null){
 

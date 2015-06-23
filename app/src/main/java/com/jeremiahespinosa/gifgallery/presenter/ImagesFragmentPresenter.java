@@ -23,7 +23,7 @@ import com.jeremiahespinosa.gifgallery.ui.adapter.ImagePreviewAdapter;
 import com.jeremiahespinosa.gifgallery.ui.fragments.SettingsPreferenceFragment;
 import com.jeremiahespinosa.gifgallery.utility.App;
 import com.jeremiahespinosa.gifgallery.utility.PrefUtils;
-import com.jeremiahespinosa.gifgallery.models.Gifs;
+import com.jeremiahespinosa.gifgallery.models.Gif;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -79,7 +79,7 @@ public class ImagesFragmentPresenter {
                 if(gifFile.exists()){
 
                     //creating gif this way for readability
-                    Gifs gif = new Gifs(filePath, filePath, null, App.getStringById(R.string.title_local));
+                    Gif gif = new Gif(filePath, filePath, null, App.getStringById(R.string.title_local));
 
                     imagePreviewAdapter.addAnotherItem(gif);
                 }
@@ -116,15 +116,15 @@ public class ImagesFragmentPresenter {
         new LoadFilesFromGoogleDriveTask(service).execute();
     }
 
-    private class LoadDropboxGifsTask extends AsyncTask<Void, Long, ArrayList<Gifs>> {
+    private class LoadDropboxGifsTask extends AsyncTask<Void, Long, ArrayList<Gif>> {
 
         public LoadDropboxGifsTask() {
             showLoadingIndicator();
         }
 
         @Override
-        protected ArrayList<Gifs> doInBackground(Void... params) {
-            ArrayList<Gifs> listOfGifsAvailable = new ArrayList<>();
+        protected ArrayList<Gif> doInBackground(Void... params) {
+            ArrayList<Gif> listOfGifsAvailable = new ArrayList<>();
 
             try {
 
@@ -153,7 +153,7 @@ public class ImagesFragmentPresenter {
                                     +"format=jpeg&"+"size=m&"+"access_token="+PrefUtils.getPrefDropboxAccessToken();
 
                             //creating gif this way for readability
-                            Gifs gif = new Gifs(
+                            Gif gif = new Gif(
                                         ((DropboxAPI.Entry)existingEntry.metadata).path,
                                         thumbnailUrl,
                                         ((DropboxAPI.Entry) existingEntry.metadata).fileName(),
@@ -174,9 +174,9 @@ public class ImagesFragmentPresenter {
         }
 
         @Override
-        protected void onPostExecute( ArrayList<Gifs> result) {
+        protected void onPostExecute( ArrayList<Gif> result) {
 
-            for(Gifs gif : result){
+            for(Gif gif : result){
                 imagePreviewAdapter.addAnotherItem(gif);
             }
 
@@ -190,7 +190,7 @@ public class ImagesFragmentPresenter {
     }
 
     //Loading the thumbnails from drive using the drive sdk
-    private class LoadFilesFromGoogleDriveTask extends AsyncTask<Void, Void, ArrayList<Gifs>>{
+    private class LoadFilesFromGoogleDriveTask extends AsyncTask<Void, Void, ArrayList<Gif>>{
 
         private Drive mService;
 
@@ -200,8 +200,8 @@ public class ImagesFragmentPresenter {
         }
 
         @Override
-        protected ArrayList<Gifs> doInBackground(Void... params) {
-            ArrayList<Gifs> result = null;
+        protected ArrayList<Gif> doInBackground(Void... params) {
+            ArrayList<Gif> result = null;
 
             try{
                 result = retrieveAllFiles(mService);
@@ -214,9 +214,9 @@ public class ImagesFragmentPresenter {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Gifs> gifs) {
+        protected void onPostExecute(ArrayList<Gif> gifs) {
 
-            for(Gifs gif : gifs){
+            for(Gif gif : gifs){
                 imagePreviewAdapter.addAnotherItem(gif);
             }
 
@@ -236,8 +236,8 @@ public class ImagesFragmentPresenter {
      * @param service Drive API service instance.
      * @return List of File resources.
      */
-    private static ArrayList<Gifs> retrieveAllFiles(Drive service) throws IOException {
-        ArrayList<Gifs> result = new ArrayList<>();
+    private static ArrayList<Gif> retrieveAllFiles(Drive service) throws IOException {
+        ArrayList<Gif> result = new ArrayList<>();
         Drive.Files.List request = service.files().list();
 
         do {
@@ -249,7 +249,7 @@ public class ImagesFragmentPresenter {
                     if( (files.getItems().get(i).getMimeType() != null) && files.getItems().get(i).getMimeType().contains("gif") ){
                         if(files.getItems().get(i).getThumbnailLink() != null && !files.getItems().get(i).getThumbnailLink().isEmpty()){
                             //creating gif this way for readability
-                            Gifs gif = new Gifs(
+                            Gif gif = new Gif(
                                     files.getItems().get(i).getDownloadUrl(),
                                     files.getItems().get(i).getThumbnailLink(),
                                     files.getItems().get(i).getOriginalFilename(),

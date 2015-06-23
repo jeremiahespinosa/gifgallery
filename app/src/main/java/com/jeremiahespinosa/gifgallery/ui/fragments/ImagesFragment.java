@@ -1,6 +1,5 @@
 package com.jeremiahespinosa.gifgallery.ui.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,9 +17,6 @@ import com.jeremiahespinosa.gifgallery.ui.activities.MainActivity;
 import com.jeremiahespinosa.gifgallery.ui.adapter.ImagePreviewAdapter;
 import com.jeremiahespinosa.gifgallery.utility.App;
 import com.jeremiahespinosa.gifgallery.ui.widgets.GridSpacingDecoration;
-import com.jeremiahespinosa.gifgallery.models.Gifs;
-
-import java.util.ArrayList;
 
 /**
  * Created by jespinosa on 6/22/15.

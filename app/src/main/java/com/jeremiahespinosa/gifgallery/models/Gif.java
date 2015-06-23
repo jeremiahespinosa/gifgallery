@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by jespinosa on 6/22/15.
  */
-public class Gifs implements Parcelable{
+public class Gif implements Parcelable{
 
     //fullImageToLoadPath (dropbox): used for dropbox path, since the url must be constructed for each call
     //we will save the path to the image
@@ -30,14 +30,14 @@ public class Gifs implements Parcelable{
      * @param imageName
      * @param gifSource
      */
-    public Gifs(String fullImageToLoadPath, String thumbnailUrlToLoad, String imageName, String gifSource) {
+    public Gif(String fullImageToLoadPath, String thumbnailUrlToLoad, String imageName, String gifSource) {
         this.fullImageToLoadPath = fullImageToLoadPath;
         this.thumbnailUrlToLoad = thumbnailUrlToLoad;
         this.imageName = imageName;
         this.gifSource = gifSource;
     }
 
-    public Gifs(Parcel in) {
+    public Gif(Parcel in) {
         fullImageToLoadPath = in.readString();
         thumbnailUrlToLoad = in.readString();
         imageName = in.readString();
@@ -93,13 +93,13 @@ public class Gifs implements Parcelable{
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
 
         @Override
-        public Gifs createFromParcel(Parcel source) {
-            return new Gifs(source);
+        public Gif createFromParcel(Parcel source) {
+            return new Gif(source);
         }
 
         @Override
-        public Gifs[] newArray(int size) {
-            return new Gifs[size];
+        public Gif[] newArray(int size) {
+            return new Gif[size];
         }
     };
 }
