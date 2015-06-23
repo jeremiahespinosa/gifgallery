@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">GifGallery</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="sign_in_dropbox">Sign into Dropbox</string>
+    <string name="sign_in_drive">Sign into Google Drive</string>
+    <string name="currently_in_drive">Currently signed into Google Drive</string>
+    <string name="currently_in_dropbox">Currently signed into Dropbox</string>
+    <string name="no_network">Please ensure your device has an internet connection</string>
+    <string name="title_local">Local</string>
+    <string name="title_dropbox">Dropbox</string>
+    <string name="title_drive">Google Drive</string>
+</resources>
