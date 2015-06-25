@@ -11,20 +11,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.services.drive.DriveScopes;
 import com.jeremiahespinosa.gifgallery.R;
+import com.jeremiahespinosa.gifgallery.models.Gif;
 import com.jeremiahespinosa.gifgallery.presenter.ImagesFragmentPresenter;
+import com.jeremiahespinosa.gifgallery.presenter.ImagesView;
 import com.jeremiahespinosa.gifgallery.ui.activities.MainActivity;
 import com.jeremiahespinosa.gifgallery.ui.adapter.ImagePreviewAdapter;
 import com.jeremiahespinosa.gifgallery.utility.App;
 import com.jeremiahespinosa.gifgallery.ui.widgets.GridSpacingDecoration;
+import com.jeremiahespinosa.gifgallery.utility.PrefUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by jespinosa on 6/22/15.
  */
-public class ImagesFragment extends Fragment {
+public class ImagesFragment extends Fragment implements ImagesView {
 
     private static String TAG = "ImagesFragment";
     private String typeOfFragment = "";
+    private CardView emptyGifsCard;
+    private ProgressBar loadingIndicator;
+    private RecyclerView recyclerView;
 
     public ImagesFragment() {}
 
@@ -33,18 +44,17 @@ public class ImagesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gif_previews, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        ProgressBar loadingIndicator = (ProgressBar) view.findViewById(R.id.imagesProgressBar);
-
-        ImagePreviewAdapter imagePreviewAdapter = new ImagePreviewAdapter();
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        recyclerView.setAdapter(imagePreviewAdapter);
+
         recyclerView.addItemDecoration(new GridSpacingDecoration());
 
-        CardView emptyGifsCard = (CardView) view.findViewById(R.id.emptyGifsCard);
+        loadingIndicator = (ProgressBar) view.findViewById(R.id.imagesProgressBar);
 
-        ImagesFragmentPresenter fragmentPresenter = new ImagesFragmentPresenter(getActivity(), loadingIndicator, imagePreviewAdapter, emptyGifsCard);
+        emptyGifsCard = (CardView) view.findViewById(R.id.emptyGifsCard);
+
+        ImagesFragmentPresenter fragmentPresenter = new ImagesFragmentPresenter(getActivity().getContentResolver(), this);
 
         Bundle args = getArguments();
 
@@ -54,7 +64,12 @@ public class ImagesFragment extends Fragment {
 
         //setting the presenter to load the correct thumbnails based on fragment type
         if(typeOfFragment.equals(App.getStringById(R.string.title_drive))){
-            fragmentPresenter.loadGifsFromGoogleDrive();
+
+            GoogleAccountCredential credential;
+            credential = GoogleAccountCredential.usingOAuth2(getActivity(), Collections.singleton(DriveScopes.DRIVE));
+            credential.setSelectedAccountName(PrefUtils.getPrefDriveUser());
+
+            fragmentPresenter.loadGifsFromGoogleDrive(credential);
         }
         else if(typeOfFragment.equals(App.getStringById(R.string.title_dropbox))){
             fragmentPresenter.loadGifsFromDropbox();
@@ -64,5 +79,36 @@ public class ImagesFragment extends Fragment {
         }
 
         return view;
+    }
+
+    @Override
+    public void setListOfGifs(ArrayList<Gif> listOfGifs) {
+
+        if(listOfGifs.size() < 1){
+            App.showShortToast("No gifs found");
+            showEmptyGifsCard();
+        }
+        else{
+            recyclerView.setAdapter(new ImagePreviewAdapter(listOfGifs));
+            hideEmptyGifsCard();
+        }
+    }
+
+    @Override
+    public void showLoadingIndicator() {
+        loadingIndicator.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoadingIndicator() {
+        loadingIndicator.setVisibility(View.GONE);
+    }
+
+    private void hideEmptyGifsCard(){
+        emptyGifsCard.setVisibility(View.GONE);
+    }
+
+    private void showEmptyGifsCard(){
+        emptyGifsCard.setVisibility(View.VISIBLE);
     }
 }

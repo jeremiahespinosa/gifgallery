@@ -12,4 +12,6 @@
     <string name="title_dropbox">Dropbox</string>
     <string name="title_drive">Google Drive</string>
     <string name="no_gifs">Uh Oh! There seems to not be any gifs</string>
+    <string name="downloading">Downloading</string>
+    <string name="unable_to_load">Unable to load your image</string>
 </resources>

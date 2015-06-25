@@ -1,5 +1,6 @@
 package com.jeremiahespinosa.gifgallery.presenter;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -39,27 +40,23 @@ import java.util.Collections;
 public class ImagesFragmentPresenter {
 
     private static String TAG = "ImagesFragmentPresenter";
-    private Cursor mCursor;
-    private Context mContext;
-    private ProgressBar loadingIndicator;
-    private ImagePreviewAdapter imagePreviewAdapter;
-    private CardView emptyGifsCard;
 
-    public ImagesFragmentPresenter(Context context, ProgressBar progressBar, ImagePreviewAdapter adapter, CardView cardView) {
-        mContext = context;
-        loadingIndicator = progressBar;
-        imagePreviewAdapter = adapter;
-        emptyGifsCard = cardView;
+    private ImagesView imagesView;
+    private ContentResolver contentResolver;
+
+    public ImagesFragmentPresenter(ContentResolver contentResolver, ImagesView imagesView) {
+        this.contentResolver = contentResolver;
+        this.imagesView = imagesView;
     }
 
     public void loadGifsFromStorage(){
 
-        showLoadingIndicator();
+        imagesView.showLoadingIndicator();
 
-        if(mCursor == null){
-            mCursor = mContext.getContentResolver().query(MediaStore.Files.getContentUri("external"),
+        Cursor mCursor = contentResolver.query(MediaStore.Files.getContentUri("external"),
                     null, null, null, null);
-        }
+
+        ArrayList<Gif> gifArrayList = new ArrayList<>();
 
         while(mCursor.moveToNext()){
 
@@ -81,17 +78,16 @@ public class ImagesFragmentPresenter {
                     //creating gif this way for readability
                     Gif gif = new Gif(filePath, filePath, null, App.getStringById(R.string.title_local));
 
-                    imagePreviewAdapter.addAnotherItem(gif);
+                    gifArrayList.add(gif);
                 }
             }
         }
 
-        if(imagePreviewAdapter.getItemCount() < 1){
-            App.showShortToast("No gifs found");
-            showEmptyGifsCard();
-        }
+        imagesView.setListOfGifs(gifArrayList);
 
-        hideLoadingIndicator();
+
+        imagesView.hideLoadingIndicator();
+
     }
 
     public void loadGifsFromDropbox(){
@@ -105,11 +101,7 @@ public class ImagesFragmentPresenter {
         }
     }
 
-    public void loadGifsFromGoogleDrive(){
-
-        GoogleAccountCredential credential;
-        credential = GoogleAccountCredential.usingOAuth2(mContext, Collections.singleton(DriveScopes.DRIVE));
-        credential.setSelectedAccountName(PrefUtils.getPrefDriveUser());
+    public void loadGifsFromGoogleDrive(GoogleAccountCredential credential){
 
         Drive service = new Drive.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), credential).setApplicationName(App.getStringById(R.string.app_name)).build();
 
@@ -119,7 +111,7 @@ public class ImagesFragmentPresenter {
     private class LoadDropboxGifsTask extends AsyncTask<Void, Long, ArrayList<Gif>> {
 
         public LoadDropboxGifsTask() {
-            showLoadingIndicator();
+            imagesView.showLoadingIndicator();
         }
 
         @Override
@@ -174,17 +166,11 @@ public class ImagesFragmentPresenter {
         }
 
         @Override
-        protected void onPostExecute( ArrayList<Gif> result) {
+        protected void onPostExecute( ArrayList<Gif> gifs) {
 
-            for(Gif gif : result){
-                imagePreviewAdapter.addAnotherItem(gif);
-            }
+            imagesView.setListOfGifs(gifs);
 
-            if(imagePreviewAdapter.getItemCount() < 1){
-                showEmptyGifsCard();
-            }
-
-            hideLoadingIndicator();
+            imagesView.hideLoadingIndicator();
         }
 
     }
@@ -195,7 +181,8 @@ public class ImagesFragmentPresenter {
         private Drive mService;
 
         public LoadFilesFromGoogleDriveTask(Drive service) {
-            showLoadingIndicator();
+            imagesView.showLoadingIndicator();
+
             mService = service;
         }
 
@@ -216,15 +203,9 @@ public class ImagesFragmentPresenter {
         @Override
         protected void onPostExecute(ArrayList<Gif> gifs) {
 
-            for(Gif gif : gifs){
-                imagePreviewAdapter.addAnotherItem(gif);
-            }
+            imagesView.setListOfGifs(gifs);
 
-            if(imagePreviewAdapter.getItemCount() < 1){
-                showEmptyGifsCard();
-            }
-
-            hideLoadingIndicator();
+            imagesView.hideLoadingIndicator();
         }
     }
 
@@ -272,21 +253,5 @@ public class ImagesFragmentPresenter {
                 request.getPageToken().length() > 0);
 
         return result;
-    }
-
-    private void hideLoadingIndicator(){
-        loadingIndicator.setVisibility(View.GONE);
-    }
-
-    private void showLoadingIndicator(){
-        loadingIndicator.setVisibility(View.VISIBLE);
-    }
-
-    private void hideEmptyGifsCard(){
-        emptyGifsCard.setVisibility(View.GONE);
-    }
-
-    private void showEmptyGifsCard(){
-        emptyGifsCard.setVisibility(View.VISIBLE);
     }
 }

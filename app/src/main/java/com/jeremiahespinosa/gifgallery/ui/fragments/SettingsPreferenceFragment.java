@@ -16,6 +16,8 @@ import com.dropbox.client2.session.AppKeyPair;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.AccountPicker;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
@@ -43,7 +45,6 @@ public class SettingsPreferenceFragment extends PreferenceFragment implements Pr
     public static final int COMPLETE_AUTHORIZATION_REQUEST_CODE = 35;
 
     public static final int REQUEST_CODE_PICK_ACCOUNT = 1000;
-    private static final int REQUEST_AUTHORIZATION_CODE = 1993;
 
     Preference dropboxPreference;
     Preference googleDrivePreference;
@@ -116,12 +117,15 @@ public class SettingsPreferenceFragment extends PreferenceFragment implements Pr
                 }
             }
 
-            else if (preferenceClicked.equals(SettingsActivity.KEY_PREF_GOOGLE_DRIVE)) {
+            else if (preferenceClicked.equals(SettingsActivity.KEY_PREF_GOOGLE_DRIVE) && checkPlayServices()) {
 
                 if(PrefUtils.getPrefDriveToken().isEmpty()) {   //user needs to pick an email to sign in and authorize
                     pickUserAccount();
                 }
                 else {   //user is already signed in so sign them out
+
+                    credential = GoogleAccountCredential.usingOAuth2(getActivity(), Collections.singleton(DriveScopes.DRIVE));
+                    credential.setSelectedAccountName(PrefUtils.getPrefDriveUser());
 
                     credential.getGoogleAccountManager().invalidateAuthToken(PrefUtils.getPrefDriveToken());
 
@@ -134,6 +138,28 @@ public class SettingsPreferenceFragment extends PreferenceFragment implements Pr
             App.showShortToast(App.getStringById(R.string.no_network));
         }
 
+        return true;
+    }
+
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
+    /**
+     * Check the device to make sure it has the Google Play Services APK. If
+     * it doesn't, display a dialog that allows users to download the APK from
+     * the Google Play Store or enable it in the device's system settings.
+     */
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity());
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, getActivity(),
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            }
+            else {
+                Log.d(TAG, "FINISH??");
+            }
+            return false;
+        }
         return true;
     }
 

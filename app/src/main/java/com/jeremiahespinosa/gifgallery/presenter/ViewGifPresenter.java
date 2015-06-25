@@ -49,65 +49,61 @@ import java.util.Locale;
 public class ViewGifPresenter {
 
     private static String TAG = "ViewGifPresenter";
-    private Context mContext;
+    private GifView gifView;
+    private GoogleAccountCredential googleAccountCredential;
 
-    public ViewGifPresenter(Context context) {
-        mContext = context;
+    public ViewGifPresenter(GifView gifView) {
+        this.gifView = gifView;
     }
 
-    public void loadGifIntoImageView(Gif selectedGif, ImageView gifImageView){
+    public void setGoogleAccountCredential(GoogleAccountCredential credential){
+        googleAccountCredential = credential;
+    }
+
+    public GoogleAccountCredential getGoogleAccountCredential(){
+        return googleAccountCredential;
+    }
+
+    public void loadGifIntoImageView(Gif selectedGif){
 
         if(selectedGif != null){
 
             if(selectedGif.getGifSource().equals(App.getStringById(R.string.title_dropbox))){
-                getImageFromDropbox(selectedGif.getFullImageToLoadPath(), gifImageView);
+                getImageFromDropbox(selectedGif.getFullImageToLoadPath());
             }
             else if(selectedGif.getGifSource().equals(App.getStringById(R.string.title_drive))){
-                getImageFromGoogleDrive(selectedGif.getFullImageToLoadPath(), gifImageView);
+                getImageFromGoogleDrive(selectedGif.getFullImageToLoadPath());
             }
             else{
                 //local file so just load the image
-                Glide.with(mContext)
-                        .load(selectedGif.getFullImageToLoadPath())
-                        .asGif()
-                        .crossFade()
-                        .placeholder(R.mipmap.ic_launcher)
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .into(gifImageView);
+                gifView.loadGifToView(selectedGif.getFullImageToLoadPath());
             }
         }
         else{
-            App.showShortToast("Unable to load your image");
+            App.showShortToast(App.getStringById(R.string.unable_to_load));
         }
     }
 
-    private void getImageFromGoogleDrive(String basePath, ImageView gifImageView){
-        GoogleAccountCredential credential;
-        credential = GoogleAccountCredential.usingOAuth2(mContext, Collections.singleton(DriveScopes.DRIVE));
-        credential.setSelectedAccountName(PrefUtils.getPrefDriveUser());
+    private void getImageFromGoogleDrive(String basePath){
+        Drive service = new Drive.Builder(
+                AndroidHttp.newCompatibleTransport(),
+                new GsonFactory(),
+                getGoogleAccountCredential()).setApplicationName(App.getStringById(R.string.app_name)).build();
 
-        Drive service = new Drive.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), credential).setApplicationName(App.getStringById(R.string.app_name)).build();
-        new DownloadFileFromGoogleDrive(mContext, service, gifImageView, basePath).execute();
+        new DownloadFileFromGoogleDrive(service, basePath).execute();
     }
 
-    protected void getImageFromDropbox(String basePath, ImageView gifImageView){
-        new DownloadFileFromDropbox(mContext, basePath, gifImageView).execute();
+    protected void getImageFromDropbox(String basePath){
+        new DownloadFileFromDropbox(basePath).execute();
     }
 
     private class DownloadFileFromDropbox extends AsyncTask<Void, Void, String> {
-        ProgressDialog mDialog;
+
         private String dropboxGifPath;
-        ImageView imageView = null;
 
-        public DownloadFileFromDropbox(Context context, String basePath, ImageView gifImageView) {
+        public DownloadFileFromDropbox(String basePath) {
             dropboxGifPath = basePath;
-            imageView = gifImageView;
-
-            mContext = context.getApplicationContext();
-
-            mDialog = new ProgressDialog(context);
-            mDialog.setMessage("Downloading Image");
-            mDialog.show();
+            gifView.showProgressDialog();
         }
 
         @Override
@@ -141,38 +137,20 @@ public class ViewGifPresenter {
 
         @Override
         protected void onPostExecute(String gifFilePath) {
-            if(mDialog != null)
-                mDialog.dismiss();
-
-            if(gifFilePath != null && !gifFilePath.isEmpty()){
-                Glide.with(mContext)
-                        .load(gifFilePath)
-                        .asGif()
-                        .crossFade()
-                        .placeholder(R.mipmap.ic_launcher)
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .into(imageView);
-            }
+            gifView.loadGifToView(gifFilePath);
+            gifView.hideProgressDialog();
         }
 
     }
 
     private class DownloadFileFromGoogleDrive extends AsyncTask <Void, Void, String>{
-        ProgressDialog progressDialog;
         private Drive driveService;
-        private ImageView imageView;
         private String pathToDownload;
 
-        public DownloadFileFromGoogleDrive(Context context, Drive fileSelected, ImageView gifImageView, String basePath){
+        public DownloadFileFromGoogleDrive(Drive fileSelected, String basePath){
             driveService = fileSelected;
             pathToDownload = basePath;
-            imageView = gifImageView;
-            
-            progressDialog = App.getProgressDialog(context, "Downloading");
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.setCancelable(false);
-            progressDialog.setIndeterminate(true);
-            progressDialog.show();
+            gifView.showProgressDialog();
         }
 
         @Override
@@ -200,18 +178,8 @@ public class ViewGifPresenter {
 
         @Override
         protected void onPostExecute(String gifFilePath) {
-            if(progressDialog != null)
-                progressDialog.dismiss();
-
-            if(gifFilePath != null && !gifFilePath.isEmpty()){
-                Glide.with(mContext)
-                        .load(gifFilePath)
-                        .asGif()
-                        .crossFade()
-                        .placeholder(R.mipmap.ic_launcher)
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .into(imageView);
-            }
+            gifView.loadGifToView(gifFilePath);
+            gifView.hideProgressDialog();
         }
     }
 

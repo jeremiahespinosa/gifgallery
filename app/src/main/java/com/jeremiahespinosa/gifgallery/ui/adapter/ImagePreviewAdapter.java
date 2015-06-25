@@ -23,6 +23,10 @@ public class ImagePreviewAdapter extends RecyclerView.Adapter<ImagePreviewAdapte
 
     private ArrayList<Gif> mListOfGifs = new ArrayList<>();
 
+    public ImagePreviewAdapter(ArrayList<Gif> mListOfGifs) {
+        this.mListOfGifs = mListOfGifs;
+    }
+
     @Override
     public ImageViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View v = LayoutInflater.from(viewGroup.getContext())
@@ -52,68 +56,6 @@ public class ImagePreviewAdapter extends RecyclerView.Adapter<ImagePreviewAdapte
     @Override
     public int getItemCount() {
         return mListOfGifs.size();
-    }
-
-    /**
-     * Used to help show when items in the list
-     * are changed either by adding or deleting
-     *
-     * @param models
-     */
-    public void animateTo(List<Gif> models) {
-        applyAndAnimateRemovals(models);
-        applyAndAnimateAdditions(models);
-        applyAndAnimateMovedItems(models);
-    }
-
-    private void applyAndAnimateRemovals(List<Gif> newModels) {
-        for (int i = mListOfGifs.size() - 1; i >= 0; i--) {
-            final Gif model = mListOfGifs.get(i);
-            if (!newModels.contains(model)) {
-                removeItem(i);
-            }
-        }
-    }
-
-    private void applyAndAnimateAdditions(List<Gif> newModels) {
-        for (int i = 0, count = newModels.size(); i < count; i++) {
-            final Gif model = newModels.get(i);
-            if (!mListOfGifs.contains(model)) {
-                addItemAtPosition(i, model);
-            }
-        }
-    }
-
-    private void applyAndAnimateMovedItems(List<Gif> newModels) {
-        for (int toPosition = newModels.size() - 1; toPosition >= 0; toPosition--) {
-            final Gif model = newModels.get(toPosition);
-            final int fromPosition = mListOfGifs.indexOf(model);
-            if (fromPosition >= 0 && fromPosition != toPosition) {
-                moveItem(fromPosition, toPosition);
-            }
-        }
-    }
-
-    public void addAnotherItem(Gif model){
-        mListOfGifs.add(model);
-        notifyDataSetChanged();
-    }
-
-    public Gif removeItem(int position) {
-        final Gif model = mListOfGifs.remove(position);
-        notifyItemRemoved(position);
-        return model;
-    }
-
-    public void addItemAtPosition(int position, Gif model) {
-        mListOfGifs.add(position, model);
-        notifyItemInserted(position);
-    }
-
-    public void moveItem(int fromPosition, int toPosition) {
-        final Gif model = mListOfGifs.remove(fromPosition);
-        mListOfGifs.add(toPosition, model);
-        notifyItemMoved(fromPosition, toPosition);
     }
 
     public static class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

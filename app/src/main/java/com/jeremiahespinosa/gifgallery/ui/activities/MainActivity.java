@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         super.onResume();
 
         //performing here helps with updating the tabs once the user has signed into a service
+        //just a quick hack
         setupViewPager();
     }
 
