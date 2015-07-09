@@ -2,7 +2,6 @@ package com.jeremiahespinosa.gifgallery.ui.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -51,7 +50,6 @@ public class ViewGifActivity extends Activity implements GifView {
         if(extrasFromIntent != null){
             selectedGif = (Gif) extrasFromIntent.getParcelable(GIF_PARCEL_OBJECT);
         }
-
 
         //start up the presenter. set it to load the gif based on service
         ViewGifPresenter viewGifPresenter = new ViewGifPresenter(this);

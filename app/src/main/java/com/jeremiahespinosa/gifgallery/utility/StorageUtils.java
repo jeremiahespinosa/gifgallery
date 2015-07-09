@@ -36,6 +36,8 @@ public class StorageUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        App.updateMediaDirectory(file.getPath());
     }
 
     public static File getStorageDirectory(String folderName) {
@@ -56,7 +58,7 @@ public class StorageUtils {
      * @return InputStream containing the file's content if successful,
      *         {@code null} otherwise.
      */
-    public static InputStream downloadFile(Drive service, String basePath) {
+    public static InputStream downloadGoogleDriveFile(Drive service, String basePath) {
 
         if (basePath != null && !basePath.isEmpty()) {
             try {
@@ -70,6 +72,7 @@ public class StorageUtils {
                 return null;
             }
         } else {
+            Log.e(TAG, "The file doesn't have any content stored on Drive.");
             // The file doesn't have any content stored on Drive.
             return null;
         }
@@ -82,7 +85,7 @@ public class StorageUtils {
      * @throws DropboxException
      * @throws IOException
      */
-    public static InputStream downloadFile(String dropboxGifPath) throws DropboxException, IOException {
+    public static InputStream downloadDropboxFile(String dropboxGifPath) throws DropboxException, IOException {
 
         String dropboxUrl = "https://api-content.dropbox.com/1/files/auto/";
 

@@ -83,17 +83,16 @@ public class ImagesFragmentPresenter {
             }
         }
 
+        mCursor.close();
+
         imagesView.setListOfGifs(gifArrayList);
 
-
         imagesView.hideLoadingIndicator();
-
     }
 
     public void loadGifsFromDropbox(){
 
         if(App.hasInternetConnection()){
-
             new LoadDropboxGifsTask().execute();
         }
         else{

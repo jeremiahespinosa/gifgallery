@@ -14,7 +14,6 @@ import com.jeremiahespinosa.gifgallery.ui.activities.ViewGifActivity;
 import com.jeremiahespinosa.gifgallery.models.Gif;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by jespinosa on 6/22/15.

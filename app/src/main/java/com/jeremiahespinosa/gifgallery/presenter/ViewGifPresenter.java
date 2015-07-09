@@ -1,40 +1,18 @@
 package com.jeremiahespinosa.gifgallery.presenter;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.util.Log;
-import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.dropbox.client2.exception.DropboxException;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.http.GenericUrl;
-import com.google.api.client.http.HttpResponse;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.drive.Drive;
-import com.google.api.services.drive.DriveScopes;
 import com.jeremiahespinosa.gifgallery.R;
 import com.jeremiahespinosa.gifgallery.models.Gif;
 import com.jeremiahespinosa.gifgallery.utility.App;
-import com.jeremiahespinosa.gifgallery.utility.PrefUtils;
 import com.jeremiahespinosa.gifgallery.utility.StorageUtils;
-
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * This class will handle all the heavy lifting
@@ -69,10 +47,10 @@ public class ViewGifPresenter {
         if(selectedGif != null){
 
             if(selectedGif.getGifSource().equals(App.getStringById(R.string.title_dropbox))){
-                getImageFromDropbox(selectedGif.getFullImageToLoadPath());
+                getImageFromDropbox(selectedGif.getFullImageToLoadPath(), selectedGif.getImageName());
             }
             else if(selectedGif.getGifSource().equals(App.getStringById(R.string.title_drive))){
-                getImageFromGoogleDrive(selectedGif.getFullImageToLoadPath());
+                getImageFromGoogleDrive(selectedGif.getFullImageToLoadPath(), selectedGif.getImageName());
             }
             else{
                 //local file so just load the image
@@ -84,25 +62,27 @@ public class ViewGifPresenter {
         }
     }
 
-    private void getImageFromGoogleDrive(String basePath){
+    private void getImageFromGoogleDrive(String basePath, String baseName){
         Drive service = new Drive.Builder(
                 AndroidHttp.newCompatibleTransport(),
                 new GsonFactory(),
                 getGoogleAccountCredential()).setApplicationName(App.getStringById(R.string.app_name)).build();
 
-        new DownloadFileFromGoogleDrive(service, basePath).execute();
+        new DownloadFileFromGoogleDrive(service, basePath, baseName).execute();
     }
 
-    protected void getImageFromDropbox(String basePath){
-        new DownloadFileFromDropbox(basePath).execute();
+    protected void getImageFromDropbox(String basePath, String baseName){
+        new DownloadFileFromDropbox(basePath, baseName).execute();
     }
 
     private class DownloadFileFromDropbox extends AsyncTask<Void, Void, String> {
 
         private String dropboxGifPath;
+        private String dropboxFileName;
 
-        public DownloadFileFromDropbox(String basePath) {
+        public DownloadFileFromDropbox(String basePath, String fileName) {
             dropboxGifPath = basePath;
+            dropboxFileName = fileName;
             gifView.showProgressDialog();
         }
 
@@ -110,7 +90,7 @@ public class ViewGifPresenter {
         protected String doInBackground(Void... params) {
             InputStream dropboxFileContents = null;
             try{
-                dropboxFileContents = StorageUtils.downloadFile(dropboxGifPath);
+                dropboxFileContents = StorageUtils.downloadDropboxFile(dropboxGifPath);
             }
             catch (DropboxException e){
                 e.printStackTrace();
@@ -119,14 +99,23 @@ public class ViewGifPresenter {
                 e.printStackTrace();
             }
 
-            String dateBasedFileName_timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.US).format(new Date());
+            String destinationFilePath = "";
 
-            String destinationFilename =
-                    StorageUtils.getStorageDirectory(App.getStringById(R.string.app_name)).getPath()
-                    + java.io.File.separator
-                    + "GIF_"+dateBasedFileName_timeStamp + ".gif";
+            if(App.isStringNullOrEmpty(dropboxFileName)){
+                destinationFilePath =
+                        App.buildGenericNameWithPath(
+                            StorageUtils.getStorageDirectory(App.getStringById(R.string.app_name)).getPath()
+                                + java.io.File.separator,
+                                "gif");
+            }
+            else{
+                destinationFilePath =
+                        StorageUtils.getStorageDirectory(App.getStringById(R.string.app_name)).getPath()
+                        + java.io.File.separator
+                        + dropboxFileName;
+            }
 
-            java.io.File fileOnDisk = new java.io.File(destinationFilename);
+            java.io.File fileOnDisk = new java.io.File(destinationFilePath);
 
             if(dropboxFileContents != null){
                 StorageUtils.copyInputStreamToFile(dropboxFileContents, fileOnDisk);
@@ -146,27 +135,38 @@ public class ViewGifPresenter {
     private class DownloadFileFromGoogleDrive extends AsyncTask <Void, Void, String>{
         private Drive driveService;
         private String pathToDownload;
+        private String driveFileName;
 
-        public DownloadFileFromGoogleDrive(Drive fileSelected, String basePath){
+        public DownloadFileFromGoogleDrive(Drive fileSelected, String basePath, String fileName){
             driveService = fileSelected;
             pathToDownload = basePath;
             gifView.showProgressDialog();
+            driveFileName = fileName;
         }
 
         @Override
         protected String doInBackground(Void... params) {
 
-            InputStream driveFileContents = StorageUtils.downloadFile(driveService, pathToDownload);
+            InputStream driveFileContents = StorageUtils.downloadGoogleDriveFile(driveService, pathToDownload);
 
-            String dateBasedFileName_timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.US).format(new Date());
+            String destinationFilePath = "";
 
-            String destinationFilename =
-                    StorageUtils.getStorageDirectory(App.getStringById(R.string.app_name)).getPath()
-                            + java.io.File.separator
-                            + "GIF_"+dateBasedFileName_timeStamp + ".gif";
+            if(App.isStringNullOrEmpty(driveFileName)){
+                destinationFilePath =
+                        App.buildGenericNameWithPath(
+                                StorageUtils.getStorageDirectory(App.getStringById(R.string.app_name)).getPath()
+                                        + java.io.File.separator,
+                                "gif");
+            }
+            else{
+                destinationFilePath =
+                        StorageUtils.getStorageDirectory(App.getStringById(R.string.app_name)).getPath()
+                                + java.io.File.separator
+                                + driveFileName;
+            }
 
             //create file
-            java.io.File fileOnDisk = new java.io.File(destinationFilename);
+            java.io.File fileOnDisk = new java.io.File(destinationFilePath);
 
             //trying to write stream to the created file
             if(driveFileContents != null){
