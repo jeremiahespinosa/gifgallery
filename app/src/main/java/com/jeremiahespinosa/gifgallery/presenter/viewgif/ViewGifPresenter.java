@@ -1,7 +1,7 @@
-package com.jeremiahespinosa.gifgallery.presenter;
+package com.jeremiahespinosa.gifgallery.presenter.viewgif;
 
 import android.os.AsyncTask;
-import android.util.Log;
+
 import com.dropbox.client2.exception.DropboxException;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -9,6 +9,7 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.drive.Drive;
 import com.jeremiahespinosa.gifgallery.R;
 import com.jeremiahespinosa.gifgallery.models.Gif;
+import com.jeremiahespinosa.gifgallery.presenter.viewgif.GifView;
 import com.jeremiahespinosa.gifgallery.utility.App;
 import com.jeremiahespinosa.gifgallery.utility.StorageUtils;
 import java.io.IOException;

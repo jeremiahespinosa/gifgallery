@@ -1,4 +1,4 @@
-package com.jeremiahespinosa.gifgallery.presenter;
+package com.jeremiahespinosa.gifgallery.presenter.viewgif;
 
 /**
  * Created by jespinosa on 6/24/15.

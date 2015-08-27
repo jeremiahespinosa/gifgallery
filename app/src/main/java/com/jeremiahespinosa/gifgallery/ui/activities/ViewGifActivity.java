@@ -14,8 +14,8 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.services.drive.DriveScopes;
 import com.jeremiahespinosa.gifgallery.R;
 import com.jeremiahespinosa.gifgallery.models.Gif;
-import com.jeremiahespinosa.gifgallery.presenter.GifView;
-import com.jeremiahespinosa.gifgallery.presenter.ViewGifPresenter;
+import com.jeremiahespinosa.gifgallery.presenter.viewgif.GifView;
+import com.jeremiahespinosa.gifgallery.presenter.viewgif.ViewGifPresenter;
 import com.jeremiahespinosa.gifgallery.utility.App;
 import com.jeremiahespinosa.gifgallery.utility.PrefUtils;
 

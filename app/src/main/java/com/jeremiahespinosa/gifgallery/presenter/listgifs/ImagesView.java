@@ -1,4 +1,6 @@
-package com.jeremiahespinosa.gifgallery.presenter;
+package com.jeremiahespinosa.gifgallery.presenter.listgifs;
+
+import android.view.View;
 
 import com.jeremiahespinosa.gifgallery.models.Gif;
 
@@ -11,4 +13,5 @@ public interface ImagesView {
     void setListOfGifs(ArrayList<Gif> listOfGifs);
     void showLoadingIndicator();
     void hideLoadingIndicator();
+    void onGifSelected(Gif gif, View v);
 }

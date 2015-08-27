@@ -1,13 +1,9 @@
-package com.jeremiahespinosa.gifgallery.presenter;
+package com.jeremiahespinosa.gifgallery.presenter.listgifs;
 
 import android.content.ContentResolver;
-import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
-import android.support.v7.widget.CardView;
-import android.view.View;
-import android.widget.ProgressBar;
 
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
@@ -17,10 +13,8 @@ import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.drive.Drive;
-import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.FileList;
 import com.jeremiahespinosa.gifgallery.R;
-import com.jeremiahespinosa.gifgallery.ui.adapter.ImagePreviewAdapter;
 import com.jeremiahespinosa.gifgallery.ui.fragments.SettingsPreferenceFragment;
 import com.jeremiahespinosa.gifgallery.utility.App;
 import com.jeremiahespinosa.gifgallery.utility.PrefUtils;
@@ -28,7 +22,6 @@ import com.jeremiahespinosa.gifgallery.models.Gif;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * This class will handle all the heavy lifting for the ImagesFragment.

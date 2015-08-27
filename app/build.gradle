@@ -23,17 +23,22 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.0'
 
+    compile 'com.android.support:palette-v7:22.2.0'
     compile 'com.android.support:design:22.2.0'
     compile 'com.android.support:cardview-v7:22.2.0'
     compile 'com.android.support:recyclerview-v7:22.2.0'
     compile 'com.android.support:gridlayout-v7:22.2.0'
 
+    //image & gif
     compile 'com.github.bumptech.glide:glide:3.5.2'
 
+    //google drive
+    compile 'com.google.android.gms:play-services-identity:7.5.0'
     compile 'com.google.api-client:google-api-client-android:1.20.0' exclude module: 'httpclient'
     compile 'com.google.http-client:google-http-client-gson:1.20.0' exclude module: 'httpclient'
     compile 'com.google.apis:google-api-services-drive:v2-rev173-1.20.0' exclude module: 'httpclient'
+    //dropbox
     compile files('src/main/libs/dropbox-android-sdk-1.6.3.jar')
     compile files('src/main/libs/json_simple-1.1.jar')
-    compile 'com.google.android.gms:play-services-identity:7.5.0'
+
 }

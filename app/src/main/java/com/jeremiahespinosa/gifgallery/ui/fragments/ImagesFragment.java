@@ -1,7 +1,9 @@
 package com.jeremiahespinosa.gifgallery.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,9 +17,10 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.services.drive.DriveScopes;
 import com.jeremiahespinosa.gifgallery.R;
 import com.jeremiahespinosa.gifgallery.models.Gif;
-import com.jeremiahespinosa.gifgallery.presenter.ImagesFragmentPresenter;
-import com.jeremiahespinosa.gifgallery.presenter.ImagesView;
+import com.jeremiahespinosa.gifgallery.presenter.listgifs.ImagesFragmentPresenter;
+import com.jeremiahespinosa.gifgallery.presenter.listgifs.ImagesView;
 import com.jeremiahespinosa.gifgallery.ui.activities.MainActivity;
+import com.jeremiahespinosa.gifgallery.ui.activities.ViewGifActivity;
 import com.jeremiahespinosa.gifgallery.ui.adapter.ImagePreviewAdapter;
 import com.jeremiahespinosa.gifgallery.utility.App;
 import com.jeremiahespinosa.gifgallery.ui.widgets.GridSpacingDecoration;
@@ -89,7 +92,7 @@ public class ImagesFragment extends Fragment implements ImagesView {
             showEmptyGifsCard();
         }
         else{
-            recyclerView.setAdapter(new ImagePreviewAdapter(listOfGifs));
+            recyclerView.setAdapter(new ImagePreviewAdapter(listOfGifs, this));
             hideEmptyGifsCard();
         }
     }
@@ -102,6 +105,18 @@ public class ImagesFragment extends Fragment implements ImagesView {
     @Override
     public void hideLoadingIndicator() {
         loadingIndicator.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onGifSelected(Gif gif, View v) {
+
+        Intent intent = new Intent(getActivity(), ViewGifActivity.class);
+        intent.putExtra(ViewGifActivity.GIF_PARCEL_OBJECT, gif);
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation(getActivity(), (View) v, "viewSomeGif");
+
+        getActivity().startActivity(intent, options.toBundle());
     }
 
     private void hideEmptyGifsCard(){

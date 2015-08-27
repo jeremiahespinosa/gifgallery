@@ -1,6 +1,6 @@
 package com.jeremiahespinosa.gifgallery.ui.adapter;
 
-import android.content.Intent;
+
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +10,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.jeremiahespinosa.gifgallery.R;
-import com.jeremiahespinosa.gifgallery.ui.activities.ViewGifActivity;
+import com.jeremiahespinosa.gifgallery.presenter.listgifs.ImagesView;
 import com.jeremiahespinosa.gifgallery.models.Gif;
-
 import java.util.ArrayList;
 
 /**
@@ -21,9 +20,11 @@ import java.util.ArrayList;
 public class ImagePreviewAdapter extends RecyclerView.Adapter<ImagePreviewAdapter.ImageViewHolder>  {
 
     private ArrayList<Gif> mListOfGifs = new ArrayList<>();
+    private ImagesView imagesViewListener;
 
-    public ImagePreviewAdapter(ArrayList<Gif> mListOfGifs) {
+    public ImagePreviewAdapter(ArrayList<Gif> mListOfGifs, ImagesView imagesViewListener) {
         this.mListOfGifs = mListOfGifs;
+        this.imagesViewListener = imagesViewListener;
     }
 
     @Override
@@ -31,11 +32,11 @@ public class ImagePreviewAdapter extends RecyclerView.Adapter<ImagePreviewAdapte
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.item_grid_photo, viewGroup, false);
 
-        return new ImageViewHolder(v);
+        return new ImageViewHolder(v, imagesViewListener);
     }
 
     @Override
-    public void onBindViewHolder(ImageViewHolder viewHolder, int position) {
+    public void onBindViewHolder(final ImageViewHolder viewHolder, int position) {
         Gif gif = mListOfGifs.get(position);
 
         Glide.with(viewHolder.mImageView.getContext())
@@ -61,10 +62,12 @@ public class ImagePreviewAdapter extends RecyclerView.Adapter<ImagePreviewAdapte
         public final ImageView mImageView;
         public final TextView mImageTitle;
         private Gif selectedGif;
+        private ImagesView imagesViewListener;
 
-        public ImageViewHolder(View itemView) {
+
+        public ImageViewHolder(View itemView, ImagesView imagesViewListener) {
             super(itemView);
-
+            this.imagesViewListener = imagesViewListener;
             itemView.setOnClickListener(this);
             mImageView = (ImageView) itemView.findViewById(R.id.imagePreview);
             mImageTitle = (TextView) itemView.findViewById(R.id.imageTitle);
@@ -76,10 +79,7 @@ public class ImagePreviewAdapter extends RecyclerView.Adapter<ImagePreviewAdapte
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(mImageView.getContext(), ViewGifActivity.class);
-            intent.putExtra(ViewGifActivity.GIF_PARCEL_OBJECT, selectedGif);
-
-            mImageView.getContext().startActivity(intent);
+            imagesViewListener.onGifSelected(selectedGif, mImageView);
         }
     }
 }
