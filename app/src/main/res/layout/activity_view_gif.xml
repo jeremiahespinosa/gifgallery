@@ -19,11 +19,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.jeremiahespinosa.gifgallery.ui.widgets.SquareImageView
+        <ImageView
             android:id="@+id/gifImageView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:transitionName="viewSomeGif"/>
+            android:layout_height="match_parent"/>
+            <!--android:transitionName="viewSomeGif"-->
+
         <ProgressBar
             android:id="@+id/gifProgressBar"
             android:layout_width="wrap_content"

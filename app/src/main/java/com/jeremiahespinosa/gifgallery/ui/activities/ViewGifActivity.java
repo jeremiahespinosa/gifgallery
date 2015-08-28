@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.transition.Transition;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -104,12 +105,11 @@ public class ViewGifActivity extends Activity implements GifView {
 
     @Override
     public void loadGifToView(String filePathToGif) {
+        System.out.println("load gif to view");
         if(filePathToGif != null && !filePathToGif.isEmpty()){
             Glide.with(ViewGifActivity.this)
                     .load(filePathToGif)
                     .asGif()
-                    .crossFade()
-                    .placeholder(R.mipmap.ic_launcher)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(gifImageView);
         }
