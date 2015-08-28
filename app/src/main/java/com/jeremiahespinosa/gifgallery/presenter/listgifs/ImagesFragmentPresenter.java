@@ -4,8 +4,6 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
-import android.util.Log;
-import com.google.android.gms.drive.query.Query;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.exception.DropboxException;
@@ -201,25 +199,6 @@ public class ImagesFragmentPresenter {
             imagesView.hideLoadingIndicator();
         }
     }
-//
-//    /**
-//     * Retrieves results for the next page. For the first run,
-//     * it retrieves results for the first page.
-//     */
-//    private void retrieveNextPage() {
-//        // if there are no more results to retrieve,
-//        // return silently.
-//        if (!mHasMore) {
-//            return;
-//        }
-//        // retrieve the results for the next page.
-//        Query query = new Query.Builder()
-//                .setPageToken(mNextPageToken)
-//                .build();
-//        Drive.DriveApi.query(getGoogleApiClient(), query)
-//                .setResultCallback(metadataBufferCallback);
-//    }
-//
 
     /**
      * https://developers.google.com/drive/v2/reference/files/list#try-it
@@ -232,6 +211,7 @@ public class ImagesFragmentPresenter {
     private ArrayList<Gif> retrieveAllFiles(Drive service) throws IOException {
         ArrayList<Gif> result = new ArrayList<>();
         Drive.Files.List request = service.files().list();
+        request.setQ("mimeType='image/gif'");
 
         do {
             try {
