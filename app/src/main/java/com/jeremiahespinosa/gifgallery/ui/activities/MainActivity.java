@@ -17,6 +17,8 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
 
     private static String TAG = "MainActivity";
     public static final String BUNDLE_KEY = "TYPE";
+    private ViewPagerAdapter adapter;
+    private int counter = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,8 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         setContentView(R.layout.activity_main);
 
         setUpToolbar();
+
+        setupViewPager();
     }
 
     private void setUpToolbar(){
@@ -36,13 +40,13 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     private void setupViewPager() {
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
 
-        final ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        addLocalTab(adapter);
+        addLocalTab();
 
-        addDropboxTab(adapter);
+        addDropboxTab();
 
-        addGoogleDriveTab(adapter);
+        addGoogleDriveTab();
 
         viewPager.setAdapter(adapter);
 
@@ -50,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         setUpTabLayout(viewPager);
     }
 
-    private void addLocalTab(final ViewPagerAdapter adapter){
+    private void addLocalTab(){
         ImagesFragment imagesFragment = new ImagesFragment();
 
         Bundle args = new Bundle();
@@ -60,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         adapter.addFragment(imagesFragment, App.getStringById(R.string.title_local));
     }
 
-    private void addDropboxTab(final ViewPagerAdapter adapter){
+    private void addDropboxTab(){
         //check if user is signed into services before filling in the tabs
         if(!PrefUtils.getPrefDropboxAccessToken().isEmpty()) {
             ImagesFragment imagesFragment = new ImagesFragment();
@@ -73,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         }
     }
 
-    private void addGoogleDriveTab(final ViewPagerAdapter adapter){
+    private void addGoogleDriveTab(){
         if(!PrefUtils.getPrefDriveToken().isEmpty()) {
             ImagesFragment imagesFragment = new ImagesFragment();
 
@@ -91,12 +95,36 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+        //save number of services turned on
+        if(!PrefUtils.getPrefDropboxAccessToken().isEmpty())
+            counter++;
+        if(!PrefUtils.getPrefDriveToken().isEmpty())
+            counter++;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
 
-        //performing here helps with updating the tabs once the user has signed into a service
-        //just a quick hack
-        setupViewPager();
+        //hacky way to get the pager to reload if the user signs into a service
+        //this also enables the users fragment state to be saved instead of starting them
+        //at the local fragment every time they change activities or press home button
+        int tempCounter = 1;
+
+        if(!PrefUtils.getPrefDropboxAccessToken().isEmpty())
+            tempCounter++;
+        if(!PrefUtils.getPrefDriveToken().isEmpty())
+            tempCounter++;
+
+        if(tempCounter != counter) {
+            setupViewPager();
+        }
+
+        //reset the counter
+        counter = 1;
     }
 
     @Override

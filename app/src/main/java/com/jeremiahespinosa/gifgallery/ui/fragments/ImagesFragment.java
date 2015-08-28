@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +41,8 @@ public class ImagesFragment extends Fragment implements ImagesView {
     private CardView emptyGifsCard;
     private ProgressBar loadingIndicator;
     private RecyclerView recyclerView;
+    private ImagesFragmentPresenter fragmentPresenter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     public ImagesFragment() {}
 
@@ -49,6 +53,9 @@ public class ImagesFragment extends Fragment implements ImagesView {
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.activity_main_swipe_refresh_layout);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.primary, R.color.primary_dark, R.color.accent);
+
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
         recyclerView.addItemDecoration(new GridSpacingDecoration());
@@ -57,7 +64,7 @@ public class ImagesFragment extends Fragment implements ImagesView {
 
         emptyGifsCard = (CardView) view.findViewById(R.id.emptyGifsCard);
 
-        ImagesFragmentPresenter fragmentPresenter = new ImagesFragmentPresenter(getActivity().getContentResolver(), this);
+        fragmentPresenter = new ImagesFragmentPresenter(getActivity().getContentResolver(), this);
 
         Bundle args = getArguments();
 
@@ -65,9 +72,23 @@ public class ImagesFragment extends Fragment implements ImagesView {
             typeOfFragment = args.getString(MainActivity.BUNDLE_KEY, "");
         }
 
+        refreshContent();
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshContent();
+            }
+        });
+
+
+        return view;
+    }
+
+    private void refreshContent(){
         //setting the presenter to load the correct thumbnails based on fragment type
         if(typeOfFragment.equals(App.getStringById(R.string.title_drive))){
-
+            Log.d(TAG, "swipe refresh - drive");
             GoogleAccountCredential credential;
             credential = GoogleAccountCredential.usingOAuth2(getActivity(), Collections.singleton(DriveScopes.DRIVE));
             credential.setSelectedAccountName(PrefUtils.getPrefDriveUser());
@@ -75,17 +96,29 @@ public class ImagesFragment extends Fragment implements ImagesView {
             fragmentPresenter.loadGifsFromGoogleDrive(credential);
         }
         else if(typeOfFragment.equals(App.getStringById(R.string.title_dropbox))){
+            Log.d(TAG, "swipe refresh - dropbox");
+
             fragmentPresenter.loadGifsFromDropbox();
         }
         else{
+            Log.d(TAG, "swipe refresh - storage");
+
             fragmentPresenter.loadGifsFromStorage();
         }
+    }
 
-        return view;
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Log.v(TAG, "Resuming fragment");
+
+        //TODO: check if we can update tabs from here
     }
 
     @Override
     public void setListOfGifs(ArrayList<Gif> listOfGifs) {
+        mSwipeRefreshLayout.setRefreshing(false);
 
         if(listOfGifs.size() < 1){
             App.showShortToast("No gifs found");
