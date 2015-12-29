@@ -3,6 +3,7 @@
 Gif Gallery lets you view any gifs that you may have on your phone, in your Dropbox or Google Drive
 
 TODO:
+
 1. Caching,
 2. Sharing,
 3. Pagination for Dropbox and Google Drive,
